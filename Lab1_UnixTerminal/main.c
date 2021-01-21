@@ -1,3 +1,4 @@
+//used gcc main.c -m -o main to compile as I used math.h
 #include <stdio.h>
 #include <math.h>
 double power(double base, double n){
