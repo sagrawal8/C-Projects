@@ -1,6 +1,6 @@
 # Monorepo
 
-hashank Agrawal
+Shashank Agrawal
 * *[Phonetic spelling](https://dictionary.cambridge.org/us/help/phonetics.html) of your name here* **(Sha-Shaa-nk)**
 
 ## Read the FAQ
