@@ -7,5 +7,5 @@ In order to start thinking a bit algorithmically, modify this file and answer th
 
 ## Answers
 
-1. *Your answer to question 1*
-2. *Your answer to question 2*
+1. Since there are 10 numbers and the range of numbers is known (1-10), and we assume this is the worst case possibility, the user could take upto 10 guesses to guess the number right. This would mean the user guesses the correct number on the last guess.
+2. If the user gets a hint on whether his guess is higher or lower, this would make it quite similar to a binary search where the worst case possibility is log2(n) [base-2 log of n, where n is 10 in this case]. This is because the number of guesses is halved each instance the user gets a hint. log2(10) = 3.3 which means a maximum of 4 guesses. 
