@@ -1,12 +1,17 @@
-//used gcc main.c -m -o main to compile as I used math.h
 #include <stdio.h>
-#include <math.h>
+
 double power(double base, double n){
-	return  pow(base, n);
+	int i;
+    int product = base;
+    for (i = 0; i < n; i++){
+        product *= base;
+    }
+    return product;
 }
 
 int main(){
 	int i;
+
     char* str = "";
 	for(i = 0; i < 10; i++){
 		if(i == 0){
