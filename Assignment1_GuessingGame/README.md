@@ -1,11 +1,11 @@
 # TODO Please edit the following information in your assignment
 
-- Name: *edit me*
-- How many hours did it take you to complete this assignment? *edit me*
-- Did you collaborate with any other students/TAs/Professors? *edit me*
+- Name: Shashank Agrawal
+- How many hours did it take you to complete this assignment? 1 Hour
+- Did you collaborate with any other students/TAs/Professors? No
 - Did you use any external resources? (Cite them below)
-  - *edit me*
-  - *edit me and add more rows if needed*
+  - No
+  - 
 - (Optional) What was your favorite part of the assignment? *edit me*
 - (Optional) How would you improve the assignment? *edit me*
 
