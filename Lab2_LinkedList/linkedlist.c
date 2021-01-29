@@ -21,40 +21,45 @@ node_t* create_list(){
     int wins[200];
     int year[200];
     FILE *fptr;
-    int c;
+    int c;        //holds index position for data array
+    int count;    //counts number of redsox data entries * 2
     if((fptr = fopen("redSoxData.txt", "r")) == NULL){
         printf("error opening file!\n");
     }
-   
-    for (c = 0; c < 14; c++)
-    fscanf(fptr, "%d,",&data[c]);
+    c = 0;
+    while(!feof(fptr)){
+        fscanf(fptr, "%d", &data[c]);
+        c++;
+    }
+    count = c;
    
     int i;
     i = 0;
-    for(c = 0; c < 14; c = c + 2){
+    int sizeOfData;
+    sizeOfData = *(&data + 1) - data;    //copy years from data array to year array
+    for(c = 0; c < count; c = c + 2){
         year[i] = data[c];
         i++;
     }   
     i = 0;
-    for(c = 1; c < 14; c = c + 2){
+    for(c = 1; c < count; c = c + 2){   //copy wins from data array to win array
         wins[i] = data[c];
         i++;   
     }
-    
+   
     node_t* head = NULL;
-    for(i = 0; i < 7; i ++){
+    for(i = 0; i < count/2; i ++){          
+        node_t* new_node = (node_t*)malloc(sizeof(node_t));
+        new_node->wins = wins[i];
+        new_node->year = year[i];    
         if(head == NULL){
-            node_t* new_node = (node_t*)malloc(sizeof(node_t));
-            new_node->wins = wins[i];
-            new_node->year = year[i];    
             new_node->next = NULL;
             head = new_node;
         }
-        node_t* new_node = (node_t*)malloc(sizeof(node_t));
-        new_node->wins = wins[i];
-        new_node->year = year[i];
+        else{
         new_node->next = head;
         head = new_node;
+        }
     }
    return head;
 }
