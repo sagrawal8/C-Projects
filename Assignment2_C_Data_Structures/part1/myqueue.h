@@ -34,7 +34,7 @@ queue_t* create_queue(unsigned int _capacity){
 	queue_t* myQueue = NULL;
     myQueue = (queue_t*)malloc(sizeof(queue_t*));
     myQueue->data = (int*)malloc(_capacity * sizeof(int));
-    myQueue->front = 0;
+    myQueue->front = -1;
     myQueue->back = -1;
     myQueue->size = 0;
     myQueue->capacity = _capacity;
@@ -79,6 +79,9 @@ int queue_enqueue(queue_t* q, int item){
     if(queue_full(q) == 1){
         return -1; 
     }
+    if(q->front == -1){
+        q->front = 0;
+    }
     q->back = (q->back + 1) % q->capacity;
     q->data[q->back] = item;
     q->size++;
@@ -94,11 +97,18 @@ int queue_dequeue(queue_t *q){
     if(queue_empty(q) == 1){
         exit(1);
     }
-    
-    q->front = (q->front + 1) % q->capacity;
+    int temp;
+    temp = q->front;
+    free(q->data[q->front]);
+    if(q->front == q->back){
+        q->front = -1;
+        q->back = -1;
+    }
+    else{    
+        q->front = (q->front + 1) % q->capacity;
+    }
     q->size--;
-    return 0;
-		
+    return temp;		
 }
 
 
@@ -127,5 +137,35 @@ void free_queue(queue_t* q){
     free(q);
 }
 
+void print_queue(queue_t* q){
+    if(queue_empty(q) == 0){
+        printf("queue is empty");
+    }
+    if(q->front <= q->back){
+        while(q->front < = q->back){
+            printf("%d ", q->data[q->front]);
+            q->front++;
+        }
+    }
+    else{
+        while(q->front <= q->capacity - 1){
+            printf("%d ", q->data[q->front]);
+            q->front++;
+        }
+        q->front = 0;
+        while(q->front <= q->back){
+            printf("%d ", q->data[q->front]);
+            q->front++;
+        }
+   }
+}
 
+int main(){
+    queue_t* q = create_queue();
+return 0;    
+}
+    
+
+
+}
 #endif
