@@ -27,7 +27,9 @@ int unitTest1(int status){
     printf("=======Stack unitTest1=======\n");
     stack_t* test1 = create_stack(MAX_DEPTH);
     stack_enqueue(test1,1);
+    print_stack(test1);
     stack_dequeue(test1);
+    print_stack(test1);
 
     free_stack(test1);
 
@@ -36,19 +38,20 @@ int unitTest1(int status){
 
 int unitTest2(int status){
     printf("=======Stack unitTest2=======\n");
-    stack_t* test1 = create_stack(MAX_DEPTH);
-    stack_enqueue(test1,1);
-    stack_enqueue(test1,2);
-    stack_enqueue(test1,3);
-    stack_enqueue(test1,4);
-    stack_enqueue(test1,5);
-    stack_enqueue(test1,6);
-    stack_enqueue(test1,7);
-    stack_enqueue(test1,8);
-    stack_enqueue(test1,9);
-    stack_enqueue(test1,10);
-
-    free_stack(test1);
+    stack_t* test2 = create_stack(MAX_DEPTH);
+    stack_enqueue(test2,1);
+    stack_enqueue(test2,2);
+    stack_enqueue(test2,3);
+    stack_enqueue(test2,4);
+    stack_enqueue(test2,5);
+    stack_enqueue(test2,6);
+    stack_enqueue(test2,7);
+    stack_enqueue(test2,8);
+    stack_enqueue(test2,9);
+    stack_enqueue(test2,10);
+    printf("dewqadadW");
+    print_stack(test2);
+    free_stack(test2);
 
     return 1;
 }
@@ -60,10 +63,11 @@ int unitTest3(int status){
     for(i=0; i < 32; i++){
         stack_enqueue(test3,1);
     }
+    print_stack(test3);
     for(i=0; i < 32; i++){
         stack_dequeue(test3);
     }
-
+    print_stack(test3);
     free_stack(test3);
 
     return 1;
@@ -76,15 +80,19 @@ int unitTest4(int status){
     for(i=0; i < 32; i++){
        stack_enqueue(test4,1);
     }
+    print_stack(test4);
     for(i=0; i < 32; i++){
         stack_dequeue(test4);
     }
+    print_stack(test4);
     for(i=0; i < 32; i++){
         stack_enqueue(test4,1);
     }
+    print_stack(test4);
     for(i=0; i < 32; i++){
         stack_dequeue(test4);
     }
+    print_stack(test4);
     free_stack(test4);
 
     return 1;

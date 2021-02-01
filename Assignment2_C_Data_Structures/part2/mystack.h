@@ -42,7 +42,7 @@ typedef struct stack{
 stack_t* create_stack(unsigned int _capacity){
 	// Modify the body of this function as needed.
 	stack_t* myStack = NULL;	
-    myStack = (stack_t)malloc(sizeof(stack_t));
+    myStack = (stack_t*)malloc(sizeof(stack_t*));
     myStack->capacity = _capacity;
     myStack->head = NULL;
     myStack->count = 0;
@@ -54,7 +54,7 @@ stack_t* create_stack(unsigned int _capacity){
 // Returns 1 if true (The stack is completely empty)
 // Returns 0 if false (the stack has at least one element enqueued)
 int stack_empty(stack_t* s){
-    if(s != NULL){
+    if(s->count != 0){
 	 return 0;
     }
     else{
@@ -83,7 +83,7 @@ int stack_enqueue(stack_t* s, int item){
 	if(stack_full(s) == 1){
         return -1; // Note: you should have two return statements in this function.
     }
-    node_t node = (node_t)malloc(sizeof(node_t));
+    node_t* node = (node_t*)malloc(sizeof(node_t*));
     node->data = item;
     node->next = s->head;
     s->head = node;
@@ -97,13 +97,13 @@ int stack_enqueue(stack_t* s, int item){
 // Removing from an empty stack should crash the program, call exit(1).
 int stack_dequeue(stack_t* s){
     if(stack_empty(s) == 1){
-        exit(1)
+        exit(1);
     }
-    node_t node = s->head;
+    node_t* node;
+    node = s->head;
     int x;
     x = node->data;
-    head = head->next;
-    free(node);
+    s->head = s->head->next;
     s->count--;
 	return x;	
 }
@@ -131,6 +131,18 @@ void free_stack(stack_t* s){
     free(s);
 }
 
-
-
+void print_stack(stack_t* s){
+    if(stack_empty(s) == 1){
+        printf("stack is empty\n");
+        return;
+    }
+    printf("printing stack now:\n");
+    node_t* node = s->head;
+    while(node->next != NULL){
+        printf("%d, ", node->data);
+        node = node->next;
+    }
+    printf("%d. ", node->data);
+    printf("\n");
+    }
 #endif

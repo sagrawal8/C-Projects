@@ -99,7 +99,7 @@ int queue_dequeue(queue_t *q){
     }
     int temp;
     temp = q->front;
-    free(q->data[q->front]);
+
     if(q->front == q->back){
         q->front = -1;
         q->back = -1;
@@ -134,38 +134,37 @@ void free_queue(queue_t* q){
     {
         queue_dequeue(q);
     }
+    free(q->data);
     free(q);
 }
 
 void print_queue(queue_t* q){
-    if(queue_empty(q) == 0){
-        printf("queue is empty");
-    }
-    if(q->front <= q->back){
-        while(q->front < = q->back){
-            printf("%d ", q->data[q->front]);
-            q->front++;
+    printf("\nPrinting queue now\n");
+    if(queue_empty(q) == 1){
+        printf("queue is empty\n");
+        return;
+    }   
+    int front_pos;
+    int back_pos;
+    front_pos = q->front;
+    back_pos = q->back;
+    if(front_pos <= back_pos){
+        while(front_pos <= back_pos){
+            printf("%d, ", q->data[front_pos]);
+            front_pos++;
         }
     }
     else{
-        while(q->front <= q->capacity - 1){
-            printf("%d ", q->data[q->front]);
-            q->front++;
+        while(front_pos <= q->capacity - 1){
+            printf("%d, ", q->data[front_pos]);
+            front_pos++;
         }
-        q->front = 0;
-        while(q->front <= q->back){
-            printf("%d ", q->data[q->front]);
-            q->front++;
+        front_pos = 0;
+        while(front_pos <= back_pos){
+            printf("%d, ", q->data[front_pos]);
+            front_pos++;
         }
    }
 }
 
-int main(){
-    queue_t* q = create_queue();
-return 0;    
-}
-    
-
-
-}
 #endif

@@ -28,7 +28,7 @@ int unitTest1(int status){
     queue_t* test1 = create_queue(1);
     queue_enqueue(test1,1);
     queue_dequeue(test1);
-
+    
     free_queue(test1);
     return 1;
 }
@@ -49,7 +49,7 @@ int unitTest2(int status){
     queue_enqueue(test2,8);
     queue_enqueue(test2,9);
     queue_enqueue(test2,10);
-
+    
     free_queue(test2);
 
     return 1;
@@ -61,11 +61,10 @@ int unitTest3(int status){
     int i =0;
     for(i=0; i < 32; i++){
         queue_enqueue(test3,1);
-    }
+    }    
     for(i=0; i < 32; i++){
         queue_dequeue(test3);
-    }
-
+    }    
     free_queue(test3);
 
     return 1;
@@ -78,15 +77,19 @@ int unitTest4(int status){
     for(i=0; i < 32; i++){
         queue_enqueue(test4,1);
     }
+   
     for(i=0; i < 32; i++){
         queue_dequeue(test4);
     }
+   
     for(i=0; i < 32; i++){
         queue_enqueue(test4,1);
     }
+   
     for(i=0; i < 32; i++){
         queue_dequeue(test4);
     }
+   
     free_queue(test4);
 
     return 1;
