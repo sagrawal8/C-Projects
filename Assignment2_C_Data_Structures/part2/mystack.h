@@ -39,10 +39,13 @@ typedef struct stack{
 // The stack should be initialized with data on the heap.
 // (Think about what the means in terms of memory allocation)
 // The stacks fields should also be initialized to default values.
-stack_t* create_stack(unsigned int capacity){
+stack_t* create_stack(unsigned int _capacity){
 	// Modify the body of this function as needed.
 	stack_t* myStack = NULL;	
-
+    myStack = (stack_t)malloc(sizeof(stack_t));
+    myStack->capacity = _capacity;
+    myStack->head = NULL;
+    myStack->count = 0;
 	return myStack;
 }
 
@@ -51,8 +54,12 @@ stack_t* create_stack(unsigned int capacity){
 // Returns 1 if true (The stack is completely empty)
 // Returns 0 if false (the stack has at least one element enqueued)
 int stack_empty(stack_t* s){
-
-	return 0;
+    if(s != NULL){
+	 return 0;
+    }
+    else{
+        return 1;
+    }
 }
 
 // Stack Full
@@ -60,8 +67,12 @@ int stack_empty(stack_t* s){
 // Returns 1 if true (The Stack is completely full, i.e. equal to capacity)
 // Returns 0 if false (the Stack has more space available to enqueue items)
 int stack_full(stack_t* s){
-
-	return 0;
+    if(s->count == s->capacity){
+        return 1;
+    }
+    else{
+        return 0;
+    }	
 }
 
 // Enqueue a new item
@@ -69,16 +80,32 @@ int stack_full(stack_t* s){
 // Returns a -1 if the operation fails (otherwise returns 0 on success).
 // (i.e. if the Stack is full that is an error, but does not crash the program).
 int stack_enqueue(stack_t* s, int item){
-		return -1; // Note: you should have two return statements in this function.
-}
+	if(stack_full(s) == 1){
+        return -1; // Note: you should have two return statements in this function.
+    }
+    node_t node = (node_t)malloc(sizeof(node_t));
+    node->data = item;
+    node->next = s->head;
+    s->head = node;
+    s->count++;
+    return 0;
+}   
 
 // Dequeue an item
 // Returns the item at the front of the stack and
 // removes an item from the stack.
 // Removing from an empty stack should crash the program, call exit(1).
 int stack_dequeue(stack_t* s){
-
-		return 9999999; // Note: This line is a 'filler' so the code compiles.
+    if(stack_empty(s) == 1){
+        exit(1)
+    }
+    node_t node = s->head;
+    int x;
+    x = node->data;
+    head = head->next;
+    free(node);
+    s->count--;
+	return x;	
 }
 
 // Stack Size
@@ -86,14 +113,22 @@ int stack_dequeue(stack_t* s){
 // A stack that has not been previously created will crash the program.
 // (i.e. A NULL stack cannot return the size)
 unsigned int stack_size(stack_t* s){
-	return 0;
-}
+	if(s != NULL){    
+        return s->count;
+    }
+    else{
+    exit(1);
+    }
+}   
 
 // Free stack
 // Removes a stack and ALL of its elements from memory.
 // This should be called before the proram terminates.
 void free_stack(stack_t* s){
-
+    while(stack_empty(s) == 1){
+        stack_dequeue(s);
+    }
+    free(s);
 }
 
 
