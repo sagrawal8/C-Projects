@@ -43,6 +43,12 @@ stack_t* create_stack(unsigned int _capacity){
 	// Modify the body of this function as needed.
 	stack_t* myStack = NULL;	
     myStack = (stack_t*)malloc(sizeof(stack_t*));
+    if(_capacity > 32){
+        _capacity = 32;
+    }
+    if(_capacity < 1){
+        _capacity = 1;
+    }
     myStack->capacity = _capacity;
     myStack->head = NULL;
     myStack->count = 0;

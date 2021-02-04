@@ -37,6 +37,10 @@ queue_t* create_queue(unsigned int _capacity){
     myQueue->front = -1;
     myQueue->back = -1;
     myQueue->size = 0;
+    if(_capacity < 1){
+        _capacity = 1;
+    }
+
     myQueue->capacity = _capacity;
 
 	return myQueue;
