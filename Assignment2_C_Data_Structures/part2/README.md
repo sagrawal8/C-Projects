@@ -37,7 +37,8 @@ We are going to talk about stacks quite a lot in this course, so it will be impo
 
 # TODO: Put your answer here
 
-*My answer is ...*
+A stack is useful when we want to know the order of how things took place in an List. Stacks dont have to be an array, they can be LinkedList as well. However, arrays have to copy themselves to a new memory location every time they reach their pre-allocated capacity (unless array is dynamic). 
+	Stacks are used in situations like the undo function. Since they follow a LIFO, last in first out policy, the undo function makes a perfect example of how a stack can be used. Stack also helps with recursive programs where the base case (last in stack) is run first and then the outer cases are run sequentially. Another example of a stack usage is the back button on your browser.
 
 # Unit Tests
 
