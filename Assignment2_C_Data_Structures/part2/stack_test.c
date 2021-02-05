@@ -49,7 +49,6 @@ int unitTest2(int status){
     stack_enqueue(test2,8);
     stack_enqueue(test2,9);
     stack_enqueue(test2,10);
-    printf("dewqadadW");
     print_stack(test2);
     free_stack(test2);
 
@@ -107,6 +106,29 @@ int unitTest5(int status){
     return 1;
 }
 
+int unitTest6(int status){
+    printf("============Stack unitTest6========\n");
+    
+    stack_t* test6 = create_stack(0);
+    stack_enqueue(test6, 1);
+    print_stack(test6);
+    free_stack(test6);
+    return 1;
+
+}
+
+int unitTest7(int status){
+    printf("========Stack unitTest7)\n");
+    
+    stack_t* test7 = create_stack(32);
+    int i;
+    for(i = 0; i < 34; i++){
+        stack_enqueue(test7, i);
+    }
+    print_stack(test7);
+    free_stack(test7);
+}
+
 
 // TODO: Add tests here
 int (*unitTests[])(int)={
@@ -115,6 +137,8 @@ int (*unitTests[])(int)={
     unitTest3,
     unitTest4,
     unitTest5,
+    unitTest6,
+    unitTest7,
     NULL
 };
 

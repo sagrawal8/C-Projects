@@ -103,6 +103,7 @@ int stack_enqueue(stack_t* s, int item){
 // Removing from an empty stack should crash the program, call exit(1).
 int stack_dequeue(stack_t* s){
     if(stack_empty(s) == 1){
+        free(s);
         exit(1);
     }
     node_t* node;
