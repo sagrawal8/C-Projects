@@ -104,6 +104,32 @@ int unitTest5(int status){
     return 1;
 }
 
+int unitTest6(int status){
+    printf("======queue unitTest6=====\n");
+    queue_t* test6 = create_queue(0);
+    queue_enqueue(test6, 10);
+    print_queue(test6);
+    free_queue(test6);
+    return 1;
+}
+
+int unitTest7(int status){
+    printf("====== unitTest 7========");
+    queue_t* test7 = create_queue(40);
+    int i;
+    for(i = 0; i < 45; i++){
+        queue_enqueue(test7, i);
+    }
+    for(i = 0; i < 20; i++){
+        queue_dequeue(test7);
+    }
+    
+    for(i = 0; i < 5; i++){
+        queue_enqueue(test7, i);
+    }
+    print_queue(test7);
+}
+
 // TODO: Add more tests here
 int (*unitTests[])(int)={
     unitTest1,
@@ -111,6 +137,8 @@ int (*unitTests[])(int)={
     unitTest3,
     unitTest4,
     unitTest5,
+    unitTest6,
+    unitTest7,
     NULL
 };
 

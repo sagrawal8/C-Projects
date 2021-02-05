@@ -168,7 +168,8 @@ void print_queue(queue_t* q){
             printf("%d, ", q->data[front_pos]);
             front_pos++;
         }
-   }
+    }
+    printf("\n");
 }
 
 #endif
