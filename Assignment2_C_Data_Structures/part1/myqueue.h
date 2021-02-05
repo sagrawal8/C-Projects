@@ -43,7 +43,7 @@ queue_t* create_queue(unsigned int _capacity){
 
     myQueue->capacity = _capacity;
 
-	return myQueue;
+    return myQueue;
 }
 
 // Queue Empty
@@ -51,7 +51,6 @@ queue_t* create_queue(unsigned int _capacity){
 // Returns 1 if true (The queue is completely empty)
 // Returns 0 if false (the queue has at least one element enqueued)
 int queue_empty(queue_t* q){
-
     if(q->size == 0){
         return 1;
     }
@@ -65,8 +64,7 @@ int queue_empty(queue_t* q){
 // Returns 1 if true (The queue is completely full)
 // Returns 0 if false (the queue has more space available to enqueue items)
 int queue_full(queue_t* q){
-
-	if(q->size == q->capacity){
+    if(q->size == q->capacity){
         return 1;
     }
     else{
@@ -78,8 +76,7 @@ int queue_full(queue_t* q){
 // i.e. push a new item into our data structure
 // Returns a -1 if the operation fails (otherwise returns 0 on success).
 // (i.e. if the queue is full that is an error).
-int queue_enqueue(queue_t* q, int item){
-    
+int queue_enqueue(queue_t* q, int item){    
     if(queue_full(q) == 1){
         return -1; 
     }
