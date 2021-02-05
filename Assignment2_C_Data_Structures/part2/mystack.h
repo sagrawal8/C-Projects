@@ -52,7 +52,7 @@ stack_t* create_stack(unsigned int _capacity){
     myStack->capacity = _capacity;
     myStack->head = NULL;
     myStack->count = 0;
-	return myStack;
+    return myStack;
 }
 
 // Stack Empty
@@ -112,7 +112,7 @@ int stack_dequeue(stack_t* s){
     x = node->data;
     s->head = s->head->next;
     s->count--;
-	return x;	
+    return x;	
 }
 
 // Stack Size
@@ -120,7 +120,7 @@ int stack_dequeue(stack_t* s){
 // A stack that has not been previously created will crash the program.
 // (i.e. A NULL stack cannot return the size)
 unsigned int stack_size(stack_t* s){
-	if(s != NULL){    
+    if(s != NULL){    
         return s->count;
     }
     else{
