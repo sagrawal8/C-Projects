@@ -30,31 +30,34 @@ int main (int argc, char* argv[]){
     int ret_counter;
     ret_counter = 0;
     while(fscanf(fptr, "%s", xyz)!= EOF){
-        if(strcasestr(xyz, "add")){
+        if(strcasestr(xyz, "#")){
+            fscanf(fptr, "%[^\n]s", xyz);   
+        }
+        else if(strcasestr(xyz, "add")){
             add_counter++;
         }
-        if(strcasestr(xyz, "sub")){
+        else if(strcasestr(xyz, "sub")){
             sub_counter++;
         }
-        if(strcasestr(xyz, "mul")){
+        else if(strcasestr(xyz, "mul")){
             mul_counter++;
         }
-        if(strcasestr(xyz, "div")){
+        else if(strcasestr(xyz, "div")){
             div_counter++;
         }
-        if(strcasestr(xyz, "mov")){
+        else if(strcasestr(xyz, "mov")){
             mov_counter++;
         }
-        if(strcasestr(xyz, "lea")){
+        else if(strcasestr(xyz, "lea")){
             lea_counter++;
         }
-        if(strcasestr(xyz, "push")){
+        else if(strcasestr(xyz, "push")){
             push_counter++;
         }
-        if(strcasestr(xyz, "pop")){
+        else if(strcasestr(xyz, "pop")){
             pop_counter++;
         }
-        if(strcasestr(xyz, "ret")){
+        else if(strcasestr(xyz, "ret")){
             ret_counter++;
         }
     }
