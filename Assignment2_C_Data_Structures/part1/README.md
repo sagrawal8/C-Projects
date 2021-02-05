@@ -34,7 +34,8 @@ Circular queues are used quite a bit in operating systems and high performance s
 
 # TODO: Put your answer here
 
-*My answer is ...*
+In the case of a queue using a linear array, insertion takes place at the rear end and deletion takes place at the rear. In the case of deletion for this type of queue, the spots used up by elements deleted are not used up by other inserted elements unless you move all the remaining 'n' number of elements behind the element deleted by one spot. This seems inefficient in certain situations like scheduling tasks by CPU where endless tasks line up one after the other and would lead to slower completion times. 
+	However, in a circular queue, even if the rear is full but there is space at the front end, then the data can be stored in the front end until the queue overflows. The memory space occupied by the linear queue is more than the circular queue.
 
 
 # Unit Tests
