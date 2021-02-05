@@ -37,7 +37,7 @@ queue_t* create_queue(unsigned int _capacity){
     myQueue->front = -1;
     myQueue->back = -1;
     myQueue->size = 0;
-    if(_capacity < 1){
+    if(_capacity < 1){      //if capacity is <1, capacity is set to 1.
         _capacity = 1;
     }
 
@@ -142,6 +142,8 @@ void free_queue(queue_t* q){
     free(q);
 }
 
+//prints all elements in queue
+//prints queue is empty if so and returns.
 void print_queue(queue_t* q){
     printf("\nPrinting queue now\n");
     if(queue_empty(q) == 1){

@@ -43,10 +43,10 @@ stack_t* create_stack(unsigned int _capacity){
 	// Modify the body of this function as needed.
 	stack_t* myStack = NULL;	
     myStack = (stack_t*)malloc(sizeof(stack_t*));
-    if(_capacity > 32){
+    if(_capacity > 32){   //sets capacity to 32 if specified capacity exceeds it
         _capacity = 32;
     }
-    if(_capacity < 1){
+    if(_capacity < 1){   //sets capacity to 1 if specified capacity is below 1
         _capacity = 1;
     }
     myStack->capacity = _capacity;
@@ -138,6 +138,10 @@ void free_stack(stack_t* s){
     free(s);
 }
 
+
+//Prints Stack
+//returns stack is empty if so and returns function
+//else prints the stack.
 void print_stack(stack_t* s){
     if(stack_empty(s) == 1){
         printf("stack is empty\n");
@@ -151,5 +155,5 @@ void print_stack(stack_t* s){
     }
     printf("%d. ", node->data);
     printf("\n");
-    }
+}
 #endif
