@@ -11,7 +11,7 @@
     Figuring out the minute differences and seeing how languages have grown
     over time was interesting.
 - (Optional) How would you improve the assignment?
-   - Give us hints on what to test.
+   - None
 
 # Logistics
 
