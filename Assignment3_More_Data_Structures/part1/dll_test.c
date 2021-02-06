@@ -36,9 +36,9 @@ int unitTest1(int status){
     if(dll_empty(test)){
     	passed = 1;
     }
+    print_dll(test);
     free_dll(test);
-
-
+    
     return passed;
 }
 
@@ -52,6 +52,7 @@ int unitTest2(int status){
     }else{
     	passed = 0;
     }
+    print_dll(test);
     free_dll(test);
 
     return passed;
@@ -68,6 +69,7 @@ int unitTest3(int status){
     }else{
        passed = 0;
     }
+    print_dll(test);
     free_dll(test);
 
     return passed;
@@ -78,7 +80,9 @@ int unitTest4(int status){
     int passed = 0;
     dll_t* test = create_dll();
     dll_push_back(test,142);
+    print_dll(test);
     dll_pop_back(test);
+    print_dll(test);
     if(0==dll_size(test)){
        passed = 1;
     }else{
@@ -91,12 +95,15 @@ int unitTest4(int status){
 
 // Tests push_back twice, then pops once
 // then should compute the correct size.
-int unitTest5(int status){
+int unitTest5(int status){    
     int passed = 0;
     dll_t* test = create_dll();
     dll_push_back(test,142);
+    print_dll(test);
     dll_push_front(test,142);
+    print_dll(test);
     dll_pop_back(test);
+    print_dll(test);
     if(1==dll_size(test)){
        passed = 1;
     }else{

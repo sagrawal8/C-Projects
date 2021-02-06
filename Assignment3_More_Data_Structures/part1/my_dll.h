@@ -66,8 +66,6 @@ int dll_empty(dll_t* l){
     }
 }
 
-}
-
 // push a new item to the front of the DLL ( before the first node in the list).
 // Returns 1 on success
 // Returns 0 on failure ( i.e. we couldn't allocate memory for the new node)
@@ -84,12 +82,12 @@ int dll_push_front(dll_t* l, int item){
             l->head = node;
             l->tail = node;
             node->next = NULL;
-            node->prev = NULL;
+            node->previous = NULL;
         }
         else{
-            l->head->prev = node;
+            l->head->previous = node;
             node->next = l->head;
-            node->prev = NULL;
+            node->previous = NULL;
             l->head = node;
         }
         l->count++;
@@ -115,11 +113,11 @@ int dll_push_back(dll_t* l, int item){
             l->head = node;
             l->tail = node;
             node->next = NULL;
-            node->prev = NULL;
+            node->previous = NULL;
         }
         else{
             l->tail->next = node;
-            node->prev = l->tail;
+            node->previous = l->tail;
             node->next = NULL;
             l->tail = node;
         }
@@ -139,18 +137,21 @@ int dll_pop_front(dll_t* t){
         return -1;
     }
     else{
-        if(is_Empty(t)){
+        if(dll_empty(t)){
             return 0;
         }
         else{
-            node_t* node = head;
+            printf("popping front");
+            node_t* node;
+            node = t->head;
             int x = node->data;
             if(t->count == 1){
                 t->tail = NULL;
+                t->head = NULL;
+                free(node);
+                return x;
             }
-            else{
-                t->head->next->prev = NULL;
-            }
+            t->head->next->previous = NULL;
             t->head = t->head->next;
             t->count--;
             free(node);
@@ -168,23 +169,23 @@ int dll_pop_back(dll_t* t){
         return -1;
     }
     else{
-        if(is_Empty(t)){
+        if(dll_empty(t)){
             return 0;
         }
         else{
-            node_t* node = tail;
+            node_t* node = t->tail;
             int x = node->data;
             if(t->count == 1){
                 t->head = NULL;
             }
             else{
-                t->tail->prev->next = NULL;
+                t->tail->previous->next = NULL;
             }
             t->tail = t->tail->previous;
             t->count--;
             free(node);
             return x;
-t
+
         }
     }
 }
@@ -207,9 +208,11 @@ int dll_insert(dll_t* l, int pos, int item){
     }
     else if(pos == l->count){
         dll_push_back(l, item);
+        return 1;
     }
     else if(pos == 0){
         dll_push_front(l, item);
+        return 1;
     }
     else{
         int i;
@@ -220,11 +223,11 @@ int dll_insert(dll_t* l, int pos, int item){
             iterator = iterator->next;
         }
         node_t* node;
-        node = (node_t*)malloc(sizof(node_t*));
+        node = (node_t*)malloc(sizeof(node_t*));
         node->next = iterator;
-        iterator->prev->next = node;
-        node->prev = iterator->prev;
-        iterator->prev = node;
+        iterator->previous->next = node;
+        node->previous = iterator->previous;
+        iterator->previous = node;
         node->data = item;
         return 1;
     }
@@ -271,10 +274,10 @@ int dll_remove(dll_t* l, int pos){
         return 0;
     }
     else if(pos == l->count - 1){
-        dll_pop_back(l, item);
+         return dll_pop_back(l);
     }
     else if(pos == 0){
-        dll_push_front(l, item);
+        return dll_pop_front(l);
     }
     else{
         int i;
@@ -285,9 +288,9 @@ int dll_remove(dll_t* l, int pos){
             iterator = iterator->next;
         }
         int x;
-        x = iterator
-        iterator->prev->next = iterator->next;
-        iterator->next->prev = iterator->prev;
+        x = iterator->data;
+        iterator->previous->next = iterator->next;
+        iterator->next->previous = iterator->previous;
         return x;
     }
 }
@@ -309,15 +312,38 @@ int dll_size(dll_t* t){
 // This should be called before the proram terminates.
 void free_dll(dll_t* t){
     node_t* node;
-    while(t->head->next != NULL){
-        node = t->head;
-        t->head = t->head->next;
-        free(node);
+    if(dll_empty(t) == 1){
+        free(t);
+        return;
     }
-    free(t->head);
+    node = t->head;
+    if(t->count != 0){
+        while(node->next != NULL){
+            node_t* temp;
+            temp = node->next;
+            free(node);
+            node = temp;
+        }
+    }
+    free(node);
     free(t);        
+    return;
 }
 
-
+void print_dll(dll_t* t){
+    node_t* node;
+    printf("====PRINTING LIST NOW=======\n");
+    if(t->count == 0){
+        printf("list is empty\n");
+        return;
+    }
+    node = t->head;
+    while(node->next != NULL){
+        printf("%d, ", node->data);
+        node = node->next;
+    }
+    printf("%d.\n", node->data);
+    return;
+}
 
 #endif
