@@ -128,6 +128,7 @@ int unitTest7(int status){
         queue_enqueue(test7, i);
     }
     print_queue(test7);
+    free_queue(test7);
 }
 
 // TODO: Add more tests here
