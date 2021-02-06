@@ -112,6 +112,7 @@ int stack_dequeue(stack_t* s){
     x = node->data;
     s->head = s->head->next;
     s->count--;
+    free(node);
     return x;	
 }
 
