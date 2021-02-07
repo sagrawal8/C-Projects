@@ -131,9 +131,9 @@ int (*unitTests[])(int)={
 int main(){
     unsigned int testsPassed = 0;
     // List of Unit Tests to test your data structure
-    int counter =0;
+    int counter = 0;
     while(unitTests[counter]!=NULL){
-	printf("========unitTest %d========\n",counter);
+	printf("========unitTest %d========\n",counter + 1);
         if(1==unitTests[counter](1)){
 		printf("passed test\n");
 		testsPassed++;	

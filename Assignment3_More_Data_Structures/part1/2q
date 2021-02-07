@@ -38,7 +38,8 @@ typedef struct DLL{
 // Returns NULL if we could not allocate memory.
 dll_t* create_dll(){
 	
-	dll_t* myDLL = (dll_t*)malloc(sizeof(dll_t));
+	dll_t* myDLL;
+    myDLL = (dll_t*)malloc(sizeof(dll_t*));
     myDLL->count = 0;
    // myDLL->head = NULL;
    // myDLL->tail = NULL;   	
@@ -80,13 +81,13 @@ int dll_push_front(dll_t* l, int item){
         if(dll_empty(l)){
             l->head = node;
             l->tail = node;
-            node->next = NULL;
-            node->previous = NULL;
+            //node->next = NULL;
+            //node->previous = NULL;
         }
         else{
             l->head->previous = node;
             node->next = l->head;
-            node->previous = NULL;
+            //node->previous = NULL;
             l->head = node;
         }
         l->count++;
@@ -111,13 +112,13 @@ int dll_push_back(dll_t* l, int item){
         if(dll_empty(l)){
             l->head = node;
             l->tail = node;
-            node->next = NULL;
-            node->previous = NULL;
+            //node->next = NULL;
+            //node->previous = NULL;
         }
         else{
             l->tail->next = node;
             node->previous = l->tail;
-            node->next = NULL;
+            //node->next = NULL;
             l->tail = node;
         }
         l->count++;
@@ -146,6 +147,8 @@ int dll_pop_front(dll_t* t){
             x = node->data;
             if(t->count == 1){
                 t->tail = NULL;
+                //free(node);
+                //return x;
             }
             else{
                 t->head->next->previous = NULL;
@@ -249,7 +252,7 @@ int dll_get(dll_t* l, int pos){
     }
     else{
         int i;
-        node_t* iterator = l->head;
+        node_t* iteratot = l->head;
 
         for(i = 0; i < pos; i++){
             iterator = iterator->next;
