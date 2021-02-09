@@ -14,7 +14,7 @@ main:
 					# Ans:
 	pushq %rbp			# Pushing quadword of %rbp which points to base of stack.
 	movq  %rsp, %rbp		# Moves a quadword of %rsp and %rbp, which is the top of stack and bottom of stack.
-					# Command< src , dest> top of stack is copied to bottom of stack? I'm guessing we are
+					# Command<src , dest> top of stack is copied to bottom of stack? I'm guessing we are
 					# initializing a stack here?
 
 					# (2) What is going on here
