@@ -19,8 +19,8 @@ main:
 
 					# (2) What is going on here
 					# Ans:
-	movq $1, %rax			# stores value at direct memory address ($1) at %rax (accumulator register) (temp = $1)
-	movq $1, %rdi			# stores value at direct memory address ($1) at %rdi register. (We are defining capacity of stack? or first program argument (%rdi = $1))
+	movq $1, %rax			# stores literal value 1 at %rax (accumulator register) (temp = $1)
+	movq $1, %rdi			# stores literal value 1 at %rdi register. (We are defining capacity of stack? or first program argument (%rdi = $1))
 	leaq .hello.str,%rsi		# stores address of hello.str at register %rsi. ->loading address of string?
 
 
@@ -29,15 +29,15 @@ main:
 					# Ans:  A computer program makes a system call when it makes a request to the operating system’s kernel. 
 					# System call provides the services of the operating system to the user programs via Application Program Interface(API)
 	syscall				# Which syscall is being run?
-					# Ans: Pushing hello.str into stack?
+					# Ans: syscall(1)
 
 					# (4) What would another option be instead of 
 					# using a syscall to achieve this?
-					# Ans:
+					# Ans: printf();
 
 	movq	$60, %rax		# (5) We are again setting up another syscall
 	movq	$0, %rdi		# What command is it?
-					# Ans:	Popping the stack?
+					# Ans:	syscall(60) to exit?
 	syscall
 
 	popq %rbp			# (Note we do not really need
