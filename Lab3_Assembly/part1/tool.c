@@ -1,9 +1,12 @@
 // Implement your cycle count tool here.
+#define _GNU_SOURCE
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-//int
-//int create_assembly_array(char* fileName){
+//Reads file line by line and checks for assembly commands.
+//If comment(#) is encountered, the line is skipped until new line character.
+//encountering an assembly command increments its counter. 
+//cycles are computed based on counters for assembly commands.
 int main (int argc, char* argv[]){ 
     FILE *fptr;
     char xyz[100];
