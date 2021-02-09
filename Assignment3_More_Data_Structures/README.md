@@ -1,13 +1,13 @@
 # TODO Please edit the following information in your assignment
 
-- Name:
-- How many hours did it take you to complete this assignment?
-- Did you collaborate with any other students/TAs/Professors?
+- Name: Shashank Agrawal
+- How many hours did it take you to complete this assignment? 2 hours
+- Did you collaborate with any other students/TAs/Professors? No
 - Did you use any external resources? (Cite them below)
   - tbd
   - tbd
-- (Optional) What was your favorite part of the assignment?
-- (Optional) How would you improve the assignment?
+- (Optional) What was your favorite part of the assignment? I liked debugging my code as it helped me gain insight on how C worked. I didn't really have a problem with getting the code working as I've done this before.
+- (Optional) How would you improve the assignment? I think it's good as it is.
 
 # Logistics
 
