@@ -1,5 +1,4 @@
 // Implement your cycle count tool here.
-#define _GNU_SOURCE
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -33,34 +32,34 @@ int main (int argc, char* argv[]){
     int ret_counter;
     ret_counter = 0;    
     while(fscanf(fptr, "%s", xyz)!= EOF){
-        if(strcasestr(xyz, "#")){
+        if(strstr(xyz, "#")){
             fscanf(fptr, "%[^\n]s", xyz);   
         }
-        else if(strcasestr(xyz, "add")){
+        else if(strstr(xyz, "add")){
             add_counter++;
         }
-        else if(strcasestr(xyz, "sub")){
+        else if(strstr(xyz, "sub")){
             sub_counter++;
         }
-        else if(strcasestr(xyz, "mul")){
+        else if(strstr(xyz, "mul")){
             mul_counter++;
         }
-        else if(strcasestr(xyz, "div")){
+        else if(strstr(xyz, "div")){
             div_counter++;
         }
-        else if(strcasestr(xyz, "mov")){
+        else if(strstr(xyz, "mov")){
             mov_counter++;
         }
-        else if(strcasestr(xyz, "lea")){
+        else if(strstr(xyz, "lea")){
             lea_counter++;
         }
-        else if(strcasestr(xyz, "push")){
+        else if(strstr(xyz, "push")){
             push_counter++;
         }
-        else if(strcasestr(xyz, "pop")){
+        else if(strstr(xyz, "pop")){
             pop_counter++;
         }
-        else if(strcasestr(xyz, "ret")){
+        else if(strstr(xyz, "ret")){
             ret_counter++;
         }
     }
