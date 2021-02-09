@@ -9,7 +9,7 @@
 //cycles are computed based on counters for assembly commands.
 int main (int argc, char* argv[]){ 
     FILE *fptr;
-    char xyz[100];
+    char xyz[1000];
     if((fptr = fopen(argv[1],"r")) == NULL){
         printf("error opening file.");
         exit(1);
@@ -31,7 +31,7 @@ int main (int argc, char* argv[]){
     int pop_counter;
     pop_counter = 0;
     int ret_counter;
-    ret_counter = 0;
+    ret_counter = 0;    
     while(fscanf(fptr, "%s", xyz)!= EOF){
         if(strcasestr(xyz, "#")){
             fscanf(fptr, "%[^\n]s", xyz);   
