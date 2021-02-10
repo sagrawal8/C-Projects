@@ -40,8 +40,8 @@ dll_t* create_dll(){
 	
 	dll_t* myDLL = (dll_t*)malloc(sizeof(dll_t));
     myDLL->count = 0;
-   // myDLL->head = NULL;
-   // myDLL->tail = NULL;   	
+    myDLL->head = NULL;
+    myDLL->tail = NULL;   	
 
 	return myDLL;
 }
