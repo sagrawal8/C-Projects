@@ -114,6 +114,93 @@ int unitTest5(int status){
     return passed;
 }
 
+
+int unitTest6(int status){
+    int passed = 0;
+    dll_t* test = create_dll();
+    dll_push_front(test, 2);
+    print_dll(test);
+    dll_push_front(test, 1);
+    print_dll(test);
+    int i;
+    for(i = 3; i <= 10; i++){
+        dll_push_back(test, i);
+    }
+    print_dll(test);
+    dll_pop_front(test);
+    dll_pop_back(test);
+    for(i = 0; i < 8; i++){
+        dll_pop_front(test);
+    }
+    if(dll_empty(test)){
+        passed = 1;
+    }
+    free_dll(test);
+    return passed;
+}
+
+int unitTest7(int status){
+    int passed  = 0;
+    dll_t* test = create_dll();
+    int i;
+    for(i = 0; i < 10; i++){
+     dll_insert(test, i, i);
+    }
+    print_dll(test);
+    dll_insert(test,11,100);
+    for(i = 0; i < 10; i++){ 
+        dll_insert(test, i+1, 20);
+    }
+    print_dll(test);
+    if(20==dll_size(test)){
+       passed = 1;
+    } 
+    free_dll(test);
+    return passed;
+}
+
+int unitTest8(int status){
+    int passed  = 0;
+    dll_t* test = create_dll();
+    int i;
+    for(i = 0; i < 10; i++){
+        dll_insert(test, i, i);
+    }
+    for(i = 0; i < 10; i++){
+        printf("%d ", dll_get(test, i));
+    }
+    printf("\n");
+    printf("%d\n", dll_get(test, -1));
+    printf("%d\n", dll_get(test, 11));
+    if(10==dll_size(test)){
+       passed = 1;
+    }
+    free_dll(test);
+    return passed;
+}
+
+int unitTest9(int status){
+    int passed  = 0;
+    dll_t* test = create_dll();
+    int i;
+    for(i = 0; i < 10; i++){
+     dll_insert(test, i, i);
+    }    
+    for(i =  0; i < 10; i++){
+        dll_remove(test, i);
+        print_dll(test);
+        dll_insert(test, i, 20);
+        print_dll(test);
+    }
+    print_dll(test);
+    if(10==dll_size(test)){
+       passed = 1;
+    }
+    free_dll(test);
+    return passed;
+}
+
+
 // TODO: Add more tests here at your discretion
 int (*unitTests[])(int)={
     unitTest1,
@@ -121,6 +208,10 @@ int (*unitTests[])(int)={
     unitTest3,
     unitTest4,
     unitTest5,
+    unitTest6,
+    unitTest7,
+    unitTest8,
+    unitTest9,
     NULL
 };
 

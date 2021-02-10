@@ -139,8 +139,7 @@ int dll_pop_front(dll_t* t){
         if(dll_empty(t)){
             return 0;
         }
-        else{
-            printf("popping front");
+        else{            
             node_t* node = t->head;
             int x; 
             x = node->data;
@@ -213,12 +212,11 @@ int dll_insert(dll_t* l, int pos, int item){
         dll_push_front(l, item);
         return 1;
     }
-    else{
+    else{        
         int i;
         node_t* iterator;
         iterator = l->head;
-  
-        for(i = 0; i < pos - 1; i++){
+        for(i = 0; i < pos; i++){
             iterator = iterator->next;
         }
         node_t* node;
@@ -228,6 +226,7 @@ int dll_insert(dll_t* l, int pos, int item){
         node->previous = iterator->previous;
         iterator->previous = node;
         node->data = item;
+        l->count++;
         return 1;
     }
 }
@@ -288,6 +287,7 @@ int dll_remove(dll_t* l, int pos){
         x = iterator->data;
         iterator->previous->next = iterator->next;
         iterator->next->previous = iterator->previous;
+        l->count--;
         return x;
     }
 }
