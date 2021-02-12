@@ -58,12 +58,13 @@ int unitTest3(int status){
     int passed = 0;
     hashmap_t* test = hashmap_create(12);
     hashmap_insert(test,"cow","A common farm animal.");
-     printf("After adding is: %d", hashmap_hasKey(test, "cow"));
+    hashmap_insert(test,"bat", "A flying rat");
+    hashmap_update(test, "bat", "A flying flying rat");
     hashmap_printKeys(test);
     if(hashmap_hasKey(test, "cow")==1){
       passed = 1;
     }
-    
+   
     hashmap_delete(test);
     return passed;
 }
@@ -73,8 +74,10 @@ int unitTest4(int status){
     int passed = 0;
     hashmap_t* test = hashmap_create(12);
     hashmap_insert(test,"cow","A common farm animal.");
+    hashmap_insert(test,"bat", "A flying flying rat");
+    hashmap_insert(test,"capybara", "An actual mat");
     hashmap_removeKey(test, "cow");
-    
+    hashmap_printKeys(test);
     if(hashmap_hasKey(test, "cow")==0){
       passed = 1;
     }
@@ -104,8 +107,8 @@ int (*unitTests[])(int)={
     unitTest1,
     unitTest2,
     unitTest3,
-   //unitTest4,
-    //unitTest5,
+    unitTest4,
+    unitTest5,
     NULL
 };
 

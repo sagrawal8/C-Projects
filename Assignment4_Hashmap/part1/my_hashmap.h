@@ -108,13 +108,12 @@ void hashmap_delete(hashmap_t* _hashmap){
 //  - Search that bucket to see if the key exists.
 // This function should run in average-case constant time
 int hashmap_hasKey(hashmap_t* _hashmap, char* key){    
-    printf("Entered has_key\n");
     if(_hashmap){
         int hashKey = _hashmap->hashFunction(key, _hashmap->buckets);
-        if(_hashmap->arrayOfLists[hashKey]){
-            node_t* iterator = _hashmap->arrayOfLists[hashKey];
+        if(_hashmap->arrayOfLists[hashKey]){            
+            node_t* iterator = _hashmap->arrayOfLists[hashKey];          
             while(iterator){
-                if(strcmp(iterator->kv->key, key)){
+                if(strcmp(iterator->kv->key, key) == 0){
                     return 1;
                 }
                 iterator = iterator -> next;
@@ -163,8 +162,23 @@ void hashmap_insert(hashmap_t* _hashmap,char* key,char* value){
 //  - Search the _hashmap's bucket for the key and return the value
 // This function should run in average-case constant time
 char* hashmap_getValue(hashmap_t* _hashmap, char* key){
-
+    if(_hashmap){
+        int hashKey = _hashmap->hashFunction(key, _hashmap->buckets);
+        if(_hashmap->arrayOfLists[hashKey]){
+            node_t* iterator = _hashmap->arrayOfLists[hashKey];
+            while(iterator){
+                if(strcmp(iterator->kv->key, key) == 0){
+                    return iterator->kv->value;;
+                }
+                iterator = iterator -> next;
+            }
+        }
+        return NULL;
+    }
+    return NULL;
 }
+    
+
 
 // TODO NOTE THAT I DID NOT FINISH REMOVE KEY BECAUSE...
 // Remove a key from a hashmap
@@ -174,7 +188,35 @@ char* hashmap_getValue(hashmap_t* _hashmap, char* key){
 //  - Search the _hashmap's bucket for the key and then remove it
 // This function should run in average-case constant time
 void hashmap_removeKey(hashmap_t* _hashmap, char* key){
-	//TODO
+    if(_hashmap){
+        int hashKey = _hashmap->hashFunction(key, _hashmap->buckets);
+        if(_hashmap->arrayOfLists[hashKey]){
+            node_t* iterator = _hashmap->arrayOfLists[hashKey];
+            node_t* temp;
+            int count = 0;
+            while(iterator){
+                if(strcmp(iterator->kv->key, key) == 0){
+                    free(iterator->kv->key);
+                    free(iterator->kv->value);
+                    if (count == 0){
+                        free(iterator->kv);
+                        free(iterator);
+                        _hashmap->arrayOfLists[hashKey] = NULL;
+                        return;
+                    }
+                    else{
+                        free(iterator->kv);
+                        temp->next = iterator->next;
+                        free(iterator);
+                        return;
+                    }                        
+                }
+                temp = iterator;
+                count++;
+                iterator = iterator -> next;
+            }
+        }
+    }
 }
 
 // Update a key with a new Value
@@ -184,7 +226,21 @@ void hashmap_removeKey(hashmap_t* _hashmap, char* key){
 //  - Updates the value of the key to the new value
 // This function should run in average-case constant time
 void hashmap_update(hashmap_t* _hashmap, char* key, char* newValue){
-	//TODO
+    if(_hashmap){
+        int hashKey = _hashmap->hashFunction(key, _hashmap->buckets);
+        if(_hashmap->arrayOfLists[hashKey]){
+            node_t* iterator = _hashmap->arrayOfLists[hashKey];
+            while(iterator){
+                if(strcmp(iterator->kv->key, key) == 0){
+                    iterator->kv->value = (char*)realloc(iterator->kv->value, strlen(newValue)*sizeof(char)+1);
+                    strcpy(iterator->kv->value, newValue);
+                }
+                iterator = iterator -> next;
+            }
+        }
+        
+    }
+	
 }
 
 // Prints all of the keys in a hashmap
