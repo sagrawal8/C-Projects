@@ -47,7 +47,7 @@ int unitTest2(int status){
     if(hashmap_hasKey(test, "cow")==0){
       passed = 1;
     }
-    
+   hashmap_printKeys(test); 
     hashmap_delete(test);
     return passed;
 }
@@ -58,7 +58,8 @@ int unitTest3(int status){
     int passed = 0;
     hashmap_t* test = hashmap_create(12);
     hashmap_insert(test,"cow","A common farm animal.");
-    
+     printf("After adding is: %d", hashmap_hasKey(test, "cow"));
+    hashmap_printKeys(test);
     if(hashmap_hasKey(test, "cow")==1){
       passed = 1;
     }
@@ -103,8 +104,8 @@ int (*unitTests[])(int)={
     unitTest1,
     unitTest2,
     unitTest3,
-    unitTest4,
-    unitTest5,
+   //unitTest4,
+    //unitTest5,
     NULL
 };
 
