@@ -93,7 +93,7 @@ int unitTest5(int status){
     hashmap_t* test = hashmap_create(12);
     hashmap_insert(test,"cow","A common farm animal.");
     hashmap_update(test, "cow", "A common farm animal in Ohio.");
-    
+    hashmap_printKeys(test);
     if(hashmap_hasKey(test, "cow")==1){
       passed = 1;
     }
@@ -102,13 +102,134 @@ int unitTest5(int status){
     return passed;
 }
 
-// TODO: Add more tests here at your discretion
+int unitTest6(int status){
+    int passed = 0;
+    hashmap_t* test = hashmap_create(1);
+    hashmap_insert(test, "cow", "A common farm animal");
+    char* cowValue;
+    cowValue = hashmap_getValue(test, "cow");
+    if(strcmp(cowValue, "A common farm animal") == 0){
+    passed = 1;
+    }
+    printf("%s\n", cowValue);
+    hashmap_delete(test);
+    return passed;
+}
+
+int unitTest7(int status){
+    int passed = 0;
+    hashmap_t* test = hashmap_create(1);
+    hashmap_insert(test, "chicken", "A common farm animal");
+    char* cowValue;
+    cowValue = hashmap_getValue(test, "cow");
+    if(cowValue == NULL){
+    passed = 1;
+    }
+    printf("%s\n", cowValue);
+    hashmap_delete(test);
+    return passed;
+}
+
+int unitTest8(int status){
+    int passed = 0;
+    hashmap_t* test = hashmap_create(2);
+    hashmap_insert(test, "cow", "A common farm animal");
+    hashmap_insert(test, "cow", "LALALALLALA");
+    hashmap_printKeys(test);
+    passed = 1;
+    hashmap_delete(test); 
+    
+    return passed;
+}
+
+int unitTest9(int status){
+    int passed = 0;
+    hashmap_t* test = hashmap_create(1);
+    hashmap_insert(test, "cow", "A common farm animal");
+    hashmap_insert(test, "ow", "LALALALLALA");
+    hashmap_insert(test, "capybara", "a water animal");
+    hashmap_printKeys(test);
+    passed = 1;
+    hashmap_delete(test);
+
+    return passed;
+}
+
+int unitTest10(int status){
+    int passed = 0;
+    hashmap_t* test = hashmap_create(3);
+    hashmap_insert(test, "cow", "A common farm animal");
+    hashmap_insert(test, "ow", "LALALALLALA");
+    hashmap_insert(test, "capybara", "a water animal");
+    hashmap_printKeys(test);
+    passed = 1;
+    hashmap_delete(test);
+
+    return passed;
+}
+
+int unitTest11(int status){
+    int passed = 0;
+    hashmap_t* test = hashmap_create(3);
+    hashmap_insert(test, "cow", "A common farm animal");
+    hashmap_insert(test, "ow", "LALALALLALA");
+    hashmap_insert(test, "capybara", "a water animal");
+    hashmap_insert(test, "bat", "flying animal");
+    hashmap_insert(test, "rat", "a rodent");
+    hashmap_printKeys(test);
+    hashmap_removeKey(test, "rat");
+    hashmap_printKeys(test);
+    hashmap_removeKey(test, "capybara");
+    hashmap_printKeys(test);
+    hashmap_removeKey(test, "cow");
+    hashmap_removeKey(test, "capybara");
+    hashmap_printKeys(test);
+    passed = 1;
+    hashmap_delete(test);
+
+    return passed;
+}
+
+
+int unitTest12(int status){
+    int passed = 0;
+    hashmap_t* test = hashmap_create(3);
+    hashmap_insert(test, "cow", "A common farm animal");
+    hashmap_insert(test, "ow", "LALALALLALA");
+    hashmap_insert(test, "capybara", "a water animal");
+    hashmap_insert(test, "bat", "flying animal");
+    hashmap_insert(test, "rat", "a rodent");
+    hashmap_printKeys(test);
+    hashmap_removeKey(test, "bat");
+    hashmap_printKeys(test);
+    hashmap_removeKey(test, "capybara");
+    hashmap_printKeys(test);
+    hashmap_removeKey(test, "cow");
+    hashmap_removeKey(test, "capybara");
+    hashmap_printKeys(test);
+    if(hashmap_hasKey(test, "ow") && hashmap_hasKey(test, "rat")){
+        passed = 1;
+    }
+    hashmap_delete(test);
+
+    return passed;
+}
+
+
+
 int (*unitTests[])(int)={
     unitTest1,
     unitTest2,
     unitTest3,
     unitTest4,
     unitTest5,
+    unitTest6,
+    unitTest7,
+    unitTest8,
+    unitTest9,
+    unitTest10,
+    unitTest11,
+    unitTest12,
     NULL
 };
 

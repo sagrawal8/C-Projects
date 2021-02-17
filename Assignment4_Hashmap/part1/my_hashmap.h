@@ -133,9 +133,9 @@ int hashmap_hasKey(hashmap_t* _hashmap, char* key){
 // This function should run in average-case constant time
 void hashmap_insert(hashmap_t* _hashmap,char* key,char* value){
     if(_hashmap){
-        //if(hashmap_hasKey(_hashmap, key)){
-           // return;
-       // }
+        if(hashmap_hasKey(_hashmap, key)){
+            return;
+        }
         int hashKey = _hashmap->hashFunction(key, _hashmap->buckets);
         pair_t* newkv = (pair_t*)malloc(sizeof(pair_t));
         newkv->key = (char*)malloc(strlen(key)*sizeof(char)+1); 
@@ -180,7 +180,6 @@ char* hashmap_getValue(hashmap_t* _hashmap, char* key){
     
 
 
-// TODO NOTE THAT I DID NOT FINISH REMOVE KEY BECAUSE...
 // Remove a key from a hashmap
 // The algorithm is:
 //  - Determine if the key exists--return if it does not.
@@ -198,10 +197,16 @@ void hashmap_removeKey(hashmap_t* _hashmap, char* key){
                 if(strcmp(iterator->kv->key, key) == 0){
                     free(iterator->kv->key);
                     free(iterator->kv->value);
-                    if (count == 0){
+                    if (count == 0 && iterator->next == NULL){
                         free(iterator->kv);
                         free(iterator);
                         _hashmap->arrayOfLists[hashKey] = NULL;
+                        return;
+                    }
+                    else if(count == 0) {
+                        free(iterator->kv);
+                        _hashmap->arrayOfLists[hashKey] = iterator->next;
+                        free(iterator);
                         return;
                     }
                     else{
@@ -256,6 +261,7 @@ void hashmap_printKeys(hashmap_t* _hashmap){
             iterator = iterator->next;
         }
     }
+printf("\n");
 }
 
 #endif
