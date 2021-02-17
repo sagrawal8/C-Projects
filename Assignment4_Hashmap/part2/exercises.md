@@ -9,9 +9,9 @@ Discuss and answer the following questions (Make sure to elaborate and justify y
 
 ## Answers:
 
-1. *edit your answer here for Part 2 question 1*
-2. *edit your answer here for Part 2 question 1*
-3. *edit your answer here for Part 2 question 1*
-4. *edit your answer here for Part 2 question 1*
+1. Maybe if the number of items in the hashmap is low; but since we are putting words with same number of letters in the same bucket, the size of the bucket can grow to be really big. When this occurs, we won't get constant time when that occurs.
+2. NewHashFunction = (Add integer values for each character in string)%(size of array)
+3. O(N)
+4. A way of handling collisions which consists of linear probing, quadratic probing, etc.
 
 
