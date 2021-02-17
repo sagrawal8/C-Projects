@@ -36,12 +36,15 @@ typedef struct DLL{
 // (Think about what the means in terms of memory allocation)
 // The DLLs fields should also be initialized to default values.
 // Returns NULL if we could not allocate memory.
-dll_t* create_dll(){
-	
+dll_t* create_dll(){	
 	dll_t* myDLL = (dll_t*)malloc(sizeof(dll_t));
-    myDLL->count = 0;
-    myDLL->head = NULL;
-    myDLL->tail = NULL;   	
+	//i dont know if this is required.
+	if(!myDLL){
+		return NULL;
+	}
+	myDLL->count = 0;
+    	myDLL->head = NULL;
+    	myDLL->tail = NULL;   	
 
 	return myDLL;
 }
