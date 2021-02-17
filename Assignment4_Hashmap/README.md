@@ -2,12 +2,15 @@
 
 - Name:
 - How many hours did it take you to complete this assignment?
+- 2-3 hours
 - Did you collaborate with any other students/TAs/Professors?
+- None
 - Did you use any external resources? (Cite them below)
-  - tbd
-  - tbd
+- None
 - (Optional) What was your favorite part of the assignment?
+- Not having to implement the hash function.
 - (Optional) How would you improve the assignment?
+- Make it a little more challenging? No sample insert code/More functions to implement on the hashmap?
 
 # Logistics
 
