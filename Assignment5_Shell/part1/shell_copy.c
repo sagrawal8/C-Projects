@@ -82,19 +82,11 @@ void interactive_mode(){
 			continue;
 		}
 		if(argv[0] != NULL) 
-		{	
-
-			//printf("argv[0] is %s\n", argv[0]);
-			//printf("pipe check is %d\n", pipeCheck);
-			//if(argv_pipe != NULL){
-			//	printf("argv_pipe[0] is %s\n",argv_pipe[0]);
-			//	printf("argv_pipe[1] is %s ",argv_pipe[1]);
-			//}
+		{
 			if(strcmp(argv[0], "") == 0 ){
 				continue;
 			}
 			if(check_for_builtin(argv) != 1){
-				printf("Built-in command not found, executing shell command\n");
 				execute_shell_command(argv, argv_pipe);
 			}
 		
@@ -102,7 +94,6 @@ void interactive_mode(){
 
 		}
 		else{
-			printf("here");
 			continue;
 		}		
 	}
@@ -171,13 +162,11 @@ void free_arg_arrays() {
 	{
 		free(argv);
 		argv = NULL;
-		//printf("Freed argv array\n");
 	}
 	if(argv_pipe != NULL)
 	{
 		free(argv_pipe);
 		argv_pipe = NULL;
-		//printf("Freed pipe array\n");
 	}
 }
 
@@ -247,10 +236,7 @@ int execute_shell_command(char** argv, char** argv_pipe){
 		strcpy(shell_command, path);
 		strcat(shell_command, argv[0]);
 	}
-	if(argv_pipe != NULL) {
-		printf("Argv_Pipe[0]: %s\n", argv_pipe[0]);
-		printf("Argv_Pipe[1]: %s\n", argv_pipe[1]);
-	}
+	
 	if(pipeCheck == false){
 		printf("PIPE CHECK FALSE");
 		pid_t pid = fork();
@@ -307,7 +293,7 @@ int execute_shell_command(char** argv, char** argv_pipe){
 				dup2(in, 0);
 			}
 			return execvp(argv_pipe[0], argv_pipe);	
-		}
+		}		
 		return pid;
 	}
 	return 0;
