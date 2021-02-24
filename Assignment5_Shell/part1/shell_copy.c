@@ -21,7 +21,8 @@ void guessingGame();
 void free_arg_arrays();
 void alarm_handler(int);
 void child_handler(int);
-int fork_function(int in, int out, char** argv);
+//int fork_function(int in, int out, char** argv);
+int fork_function(int out, char** argv);
 int timeout = 0;
 int child_done = 0;
 
@@ -227,18 +228,7 @@ int check_for_builtin(char** argv){
 
 int execute_shell_command(char** argv, char** argv_pipe){
 
-	char shell_command[BUFFER_SIZE];
-	if(strcmp(argv[0], "./shell") == 0)
-	{
-		strcpy(shell_command, argv[0]);
-	}
-	else {
-		strcpy(shell_command, path);
-		strcat(shell_command, argv[0]);
-	}
-	
 	if(pipeCheck == false){
-		printf("PIPE CHECK FALSE");
 		pid_t pid = fork();
 		if(pid == -1) 
 		{
@@ -246,8 +236,7 @@ int execute_shell_command(char** argv, char** argv_pipe){
 			exit(1);
 		}
        		if(pid == 0){
-			execve(shell_command, argv, NULL);
-			printf("Child will never go here\n");
+			execvp(argv[0], argv);
 			exit(1);
 		}else {
 			signal(SIGALRM, alarm_handler);
@@ -282,7 +271,8 @@ int execute_shell_command(char** argv, char** argv_pipe){
 
 		in = 0;
 		pipe(fd);
-		fork_function(in, fd[1], argv);
+		//fork_function(in, fd[1], argv);
+		fork_function(fd[1], argv);
 		close(fd[1]);
 		in = fd[0];
 
@@ -299,15 +289,16 @@ int execute_shell_command(char** argv, char** argv_pipe){
 	return 0;
 }
 
-int fork_function(int in, int out, char** argv) {
+//int fork_function(int in, int out, char** argv) {
+int fork_function(int out, char** argv){
 	pid_t pid;
 	if((pid = fork()) == 0)
 	{
-		if(in !=0)
-		{
-			dup2(in, 0);
-			close(in);
-		}
+		//if(in !=0)
+		//{
+		//	dup2(in, 0);
+		//	close(in);
+		//}
 		if(out != 1)
 		{
 			dup2(out, 1);
