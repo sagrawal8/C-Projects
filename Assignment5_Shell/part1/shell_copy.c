@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include <time.h>
 #define BUFFER_SIZE 80
-#define TIME_LIMIT 10 
+#define TIME_LIMIT 50 
 //Forward method declaration
 void interactive_mode();
 void parse_arguments(char* line);
@@ -21,15 +21,12 @@ void guessingGame();
 void free_arg_arrays();
 void alarm_handler(int);
 void child_handler(int);
-//int fork_function(int in, int out, char** argv);
-int fork_function(int out, char** argv);
 int timeout = 0;
 int child_done = 0;
 
 char error_message[30] = "An error has occurred\n";
 int arg_position = 0;
 int pipe_position;
-char *path;
 int arg_bufsize = BUFFER_SIZE;
 int path_bufsize = BUFFER_SIZE;
 char** argv;
@@ -42,7 +39,6 @@ int main(){
 	builtin[1] = "cd";
 	builtin[2] = "help";
 	builtin[3] = "GuessingGame";
-	path = strdup("/bin/");
 	argv = NULL;
 	argv_pipe = NULL;
 	interactive_mode();
@@ -75,16 +71,9 @@ void interactive_mode(){
 		if(getline(&line, &bufsize, stdin) == -1) {
 			printf("getline error\n");
 			shell_error();
-			continue;
 		}
 		
 		parse_arguments(line);
-		
-		if(pipeCheck == true && argv_pipe[0] == NULL) {
-			free_arg_arrays();
-			printf("mini-shell> ");
-			continue;
-		}
 
 		if(argv[0] != NULL) {
 			if(strcmp(argv[0], "") == 0 ){
@@ -94,15 +83,10 @@ void interactive_mode(){
 			if(check_for_builtin(argv) != 1){
 				execute_shell_command(argv, argv_pipe);
 			}
-		
-			free_arg_arrays();
-			free(line);
-			printf("here");
 		}
-		else{
-			free_arg_arrays();
-			free(line);			
-		}		
+		
+		free_arg_arrays();
+		free(line);		
 	}
 }
 
@@ -229,6 +213,7 @@ int check_for_builtin(char** argv){
 void execute_shell_command(char** argv, char** argv_pipe){
 
 	if(pipeCheck == false){
+		
 		pid_t pid = fork();
 		if(pid == -1) 
 		{
@@ -243,26 +228,18 @@ void execute_shell_command(char** argv, char** argv_pipe){
 			signal(SIGCHLD, child_handler);
 			alarm(TIME_LIMIT);
 			pause();
-
 			if(timeout) {
-				printf("alarm triggered\n");
 				int result = waitpid(pid, NULL, WNOHANG);
 				if(result == 0) {
-					printf("Killing Child\n");
 					kill(pid, 9);
 					wait(NULL);
 				}
-				else {
-					printf("alarm triggered but child finished normally\n");
-				}
 			}
 			else if (child_done) {
-				printf("child finished normally\n");
 				wait(NULL);
-			}
-			
-		}
+			}	
 	}
+}
 	else if(pipeCheck == true) 
 	{
 		pid_t pid1, pid2;
@@ -277,6 +254,7 @@ void execute_shell_command(char** argv, char** argv_pipe){
 			close(fd[1]);
 			close(fd[0]);
 			execvp(argv[0], argv);
+			exit(1);
 		}
 
 		else if((pid2 = fork()) == 0 && pid1 != 0)
@@ -285,13 +263,15 @@ void execute_shell_command(char** argv, char** argv_pipe){
 			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
 			close(fd[1]);			
-			execvp(argv_pipe[0], argv_pipe);	
+			execvp(argv_pipe[0], argv_pipe);
+			exit(1);	
 		}
 		else if(pid1 != 0 && pid2 != 0) {
 			close(fd[0]);
 			close(fd[1]);
 			waitpid(pid1, &child_status, child_status);
-			waitpid(pid2, &child_status, child_status);	
+			waitpid(pid2, &child_status, child_status);
+			return;	
 		}
 		
 	}
