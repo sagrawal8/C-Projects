@@ -16,7 +16,7 @@ void interactive_mode();
 void parse_arguments(char* line);
 void shell_error();
 int check_for_builtin(char** args);
-int execute_shell_command(char** argv, char** argv_pipe);
+void execute_shell_command(char** argv, char** argv_pipe);
 void guessingGame();
 void free_arg_arrays();
 void alarm_handler(int);
@@ -64,38 +64,44 @@ void interactive_mode(){
 		char* line = NULL;
 		size_t bufsize = 0;
 		argv = malloc(arg_bufsize*sizeof(char*));
+		
 		if(!argv) {
 			printf("argv error\n");
 			shell_error();
 		}
+		
 		printf("mini-shell>> ");
+		
 		if(getline(&line, &bufsize, stdin) == -1) {
 			printf("getline error\n");
 			shell_error();
 			continue;
-			
 		}
 		
 		parse_arguments(line);
+		
 		if(pipeCheck == true && argv_pipe[0] == NULL) {
 			free_arg_arrays();
 			printf("mini-shell> ");
 			continue;
 		}
-		if(argv[0] != NULL) 
-		{
+
+		if(argv[0] != NULL) {
 			if(strcmp(argv[0], "") == 0 ){
 				continue;
 			}
+			
 			if(check_for_builtin(argv) != 1){
 				execute_shell_command(argv, argv_pipe);
 			}
 		
 			free_arg_arrays();
-
+			free(line);
+			printf("here");
 		}
 		else{
-			continue;
+			free_arg_arrays();
+			free(line);			
 		}		
 	}
 }
@@ -104,10 +110,12 @@ void parse_arguments(char* line){
 	char *token;
 	pipe_position = 0;
 	arg_position = 0;
-	if(strcmp(line, "\n") == 0)
+	
+	if(strcmp(line, "\n") == 0 || strcmp(line, "") == 0)
 	{
 		return;
 	}
+	
 	token = strtok(line, " \t\n");
 	while(token != NULL) {
 		if(strcmp(token, "|") == 0) {
@@ -185,24 +193,16 @@ int check_for_builtin(char** argv){
 		
 		if(arg_position != 2) {
 			printf("path not specified\n");
+			return 1;
 		}
 		
-		char cwd[100];
-        	if(getcwd(cwd, sizeof(cwd))!=NULL) {
-                	printf("Previous directory was %s\n", cwd);
-        	}
-
-		
+		char cwd[500];
+        			
 		if(chdir(strdup(argv[1])) == -1){
 			printf("changing directories failed\n");
 			printf("Directory is still %s\n", cwd);
 		
 		}
-		
-        	if(getcwd(cwd, sizeof(cwd))!=NULL) {
-                	printf("Current directory is %s\n", cwd);
-        	}	
-
 		return 1;
 		
 	}else if(strcmp(argv[0], "help") == 0) {
@@ -226,7 +226,7 @@ int check_for_builtin(char** argv){
 
 }
 
-int execute_shell_command(char** argv, char** argv_pipe){
+void execute_shell_command(char** argv, char** argv_pipe){
 
 	if(pipeCheck == false){
 		pid_t pid = fork();
@@ -265,50 +265,38 @@ int execute_shell_command(char** argv, char** argv_pipe){
 	}
 	else if(pipeCheck == true) 
 	{
-		int i;
-		pid_t pid;
-		int in, fd[2];
-
-		in = 0;
+		pid_t pid1, pid2;
+		int fd[2];
+		int child_status;
 		pipe(fd);
-		//fork_function(in, fd[1], argv);
-		fork_function(fd[1], argv);
-		close(fd[1]);
-		in = fd[0];
-
-		if((pid = fork()) == 0)
+		pid1 = fork();
+		if(pid1 == 0)
 		{
-			if(in != 0)
-			{
-				dup2(in, 0);
-			}
-			return execvp(argv_pipe[0], argv_pipe);	
-		}		
-		return pid;
-	}
-	return 0;
-}
-
-//int fork_function(int in, int out, char** argv) {
-int fork_function(int out, char** argv){
-	pid_t pid;
-	if((pid = fork()) == 0)
-	{
-		//if(in !=0)
-		//{
-		//	dup2(in, 0);
-		//	close(in);
-		//}
-		if(out != 1)
-		{
-			dup2(out, 1);
-			close(out);
+			close(STDOUT_FILENO);
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+			close(fd[0]);
+			execvp(argv[0], argv);
 		}
-		return execvp(argv[0], argv);
-	}
-	return pid;
-}
 
+		else if((pid2 = fork()) == 0 && pid1 != 0)
+		{	
+			close(STDIN_FILENO);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+			close(fd[1]);			
+			execvp(argv_pipe[0], argv_pipe);	
+		}
+		else if(pid1 != 0 && pid2 != 0) {
+			close(fd[0]);
+			close(fd[1]);
+			waitpid(pid1, &child_status, child_status);
+			waitpid(pid2, &child_status, child_status);	
+		}
+		
+	}
+
+}
 void child_handler(int sig) {
 	child_done = 1;
 }
