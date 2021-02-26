@@ -21,18 +21,22 @@ void guessingGame();
 void free_arg_arrays();
 void alarm_handler(int);
 void child_handler(int);
+//Globals for handlers
 int timeout = 0;
 int child_done = 0;
+//Global Variables
+char error_message[30] = "An error has occurred\n";	//error message for shell_error()
+int arg_position;                                    	//position + 1 of last element in argv array;
+int pipe_position;					//position + 1 of last element in argv_pipe array
+int arg_bufsize = BUFFER_SIZE;                          //Buffer for getline function in interactive_mode()
+char** argv;						//argv array
+char** argv_pipe;					//argv array when pipe present
+char* builtin[4];  					//built in array for help function
+bool pipeCheck;						//true when pipe present, false when not
 
-char error_message[30] = "An error has occurred\n";
-int arg_position = 0;
-int pipe_position;
-int arg_bufsize = BUFFER_SIZE;
-int path_bufsize = BUFFER_SIZE;
-char** argv;
-char** argv_pipe;
-char* builtin[4];
-bool pipeCheck;
+//Main function
+//Intialize a few global variables
+//Call method for infinite while loop
 int main(){
 	
 	builtin[0] = "exit";
@@ -45,12 +49,17 @@ int main(){
   	return 0;
 }
 
+//Signal Handler for ctrl + C
 void signal_handler(int sig){
 	write(1,"\nmini-shell terminated\n",23);
 	free_arg_arrays();
 	exit(0);
 }
 
+//Infinite while loop
+//checks for ctrl + c
+//Read user input and decide whether to execute shell or builtin function
+//free arrays after loop ends
 void interactive_mode(){
 
 	signal(SIGINT, signal_handler);
@@ -68,15 +77,20 @@ void interactive_mode(){
 		
 		printf("mini-shell>> ");
 		
+		//get line allocs a buffer if a buffer size of 0 is provided.
 		if(getline(&line, &bufsize, stdin) == -1) {
 			printf("getline error\n");
 			shell_error();
 		}
 		
+		//parsing arguments
 		parse_arguments(line);
-
+		
+		
 		if(argv[0] != NULL) {
+			//continue if string is empty
 			if(strcmp(argv[0], "") == 0 ){
+				printf("\n");
 				continue;
 			}
 			
@@ -84,17 +98,19 @@ void interactive_mode(){
 				execute_shell_command(argv, argv_pipe);
 			}
 		}
-		
+		//free arrays and mallocd line
 		free_arg_arrays();
 		free(line);		
 	}
 }
 
+//Method to parse arguments
 void parse_arguments(char* line){
 	char *token;
 	pipe_position = 0;
 	arg_position = 0;
 	
+	//return if newline or emptystring character
 	if(strcmp(line, "\n") == 0 || strcmp(line, "") == 0)
 	{
 		return;
@@ -102,12 +118,15 @@ void parse_arguments(char* line){
 	
 	token = strtok(line, " \t\n");
 	while(token != NULL) {
+		//check for pipe symbol
 		if(strcmp(token, "|") == 0) {
 			argv_pipe = malloc(arg_bufsize*sizeof(char*)); 
 			pipeCheck = true;
 			token = strtok(NULL, " \t\n");
 			continue;
 		}
+
+		//add to pipe array if pipe symbol found
 		if(pipeCheck == true)
 		{
 			argv_pipe[pipe_position] = strdup(token);
@@ -123,6 +142,7 @@ void parse_arguments(char* line){
 				continue;
                 	}
 		}
+		//add to argv array if pipe symbol not found or before its found
 		else
 		{	
 			argv[arg_position] = strdup(token);
@@ -137,19 +157,24 @@ void parse_arguments(char* line){
 		}
 		token = strtok(NULL, " \t\n");
 	}
+	//set position after last element in both arrays to NULL
 	argv[arg_position] = NULL;
 	if(pipeCheck == true){
 		argv_pipe[pipe_position] = NULL;
 	}
+	//free mallocd strdup token
 	free(token);
 
 }
 
+//shell error method
+//prints error message and frees arrays
 void shell_error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 	free_arg_arrays();	
 }
 
+//Method to free argv and agrv_pipe array
 void free_arg_arrays() {
 	if(argv != NULL)
 	{
@@ -163,6 +188,9 @@ void free_arg_arrays() {
 	}
 }
 
+//Checks for builtin functions
+//Checks if user input matches any builtin function
+//returns 1 if it matches, 0 if it doesnt.
 int check_for_builtin(char** argv){
 	if(strcmp(argv[0], "exit") == 0) {
 		
@@ -192,7 +220,7 @@ int check_for_builtin(char** argv){
 	}else if(strcmp(argv[0], "help") == 0) {
 			
 		if(arg_position > 1) {
-			printf("Too many Arguments for help");
+			printf("Too many Arguments for help\n");
 		}
 		int i;
 		for(i = 0; i < 4; i++){
@@ -210,8 +238,13 @@ int check_for_builtin(char** argv){
 
 }
 
+//Executes shell commands
+//If mini-shell is run from here, it will only run for 50 seconds
+//as defined by TIME_LIMIT below header file declarations.
+//Duration can be adjusted by changing the time there.
 void execute_shell_command(char** argv, char** argv_pipe){
 
+	//If no pipe present
 	if(pipeCheck == false){
 		
 		pid_t pid = fork();
@@ -238,8 +271,9 @@ void execute_shell_command(char** argv, char** argv_pipe){
 			else if (child_done) {
 				wait(NULL);
 			}	
+		}
 	}
-}
+	//if pipe present
 	else if(pipeCheck == true) 
 	{
 		pid_t pid1, pid2;
@@ -277,14 +311,17 @@ void execute_shell_command(char** argv, char** argv_pipe){
 	}
 
 }
+
+//handle for SIGCHLD
 void child_handler(int sig) {
 	child_done = 1;
 }
-
+//handler for SIGALRM
 void alarm_handler(int sig){
 	timeout = 1;
 }
 
+//Guessing game where user guesses a number bw 1 and 10
 void guessingGame(){
 	int counter = 0;
 	srand(time(NULL));
