@@ -6,8 +6,8 @@
 - Did you use any external resources? (Cite them below)
   - Child Process Error Handling https://stackoverflow.com/questions/40223722/how-to-stop-a-child-process-if-not-completed-after-a-timeout
   - Piping; Used it as boiler plate code https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell
-- (Optional) What was your favorite part of the assignment?
-- (Optional) How would you improve the assignment?
+- (Optional) What was your favorite part of the assignment? Implementing the pipe
+- (Optional) How would you improve the assignment? N/A
 
 # Logistics
 
