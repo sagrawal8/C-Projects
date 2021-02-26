@@ -12,6 +12,9 @@
 #define BUFFER_SIZE 80
 #define TIME_LIMIT 50 
 
+//KNOWN ERRORS
+//Guessing Game prints mini-shell twice after completion.
+
 //Forward method declaration
 void interactive_mode();
 void parse_arguments(char* line);
