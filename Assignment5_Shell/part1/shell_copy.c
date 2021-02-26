@@ -1,5 +1,5 @@
 //COPY OF SHELL.c
-//USE shell.c for grading purposes.
+//USE shell.c for grading purposes
 
 #include <stdio.h>
 #include <stdlib.h>
