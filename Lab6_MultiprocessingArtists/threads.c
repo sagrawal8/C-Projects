@@ -51,7 +51,7 @@ int main(int argc, char** argv){
     printf("Final counter value: %d\n", counter);
     
     FILE *fp;
-    fp = fopen("vfork.ppm","w+");
+    fp = fopen("threads.ppm","w+");
     fputs("P3\n",fp);
     fputs("64 64\n",fp);
     fputs("255\n",fp);
