@@ -1,11 +1,11 @@
 # TODO Please edit the following information in your assignment
 
-- Name:
-- How many hours did it take you to complete this assignment?
-- Did you collaborate with any other students/TAs/Professors?
+- Name: Shashank Agrawal
+- How many hours did it take you to complete this assignment? 10
+- Did you collaborate with any other students/TAs/Professors? No
 - Did you use any external resources? (Cite them below)
-  - tbd
-  - tbd
+  - Child Process Error Handling https://stackoverflow.com/questions/40223722/how-to-stop-a-child-process-if-not-completed-after-a-timeout
+  - Piping; Used it as boiler plate code https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell
 - (Optional) What was your favorite part of the assignment?
 - (Optional) How would you improve the assignment?
 
