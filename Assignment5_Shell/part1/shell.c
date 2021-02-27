@@ -257,6 +257,7 @@ void execute_shell_command(char** argv, char** argv_pipe){
 		}
        		if(pid == 0){
 			execvp(argv[0], argv);
+			printf("Command not found. Did you mean something else?\n");
 			exit(1);
 		}else {
 			fork_error_handling(pid);	
@@ -279,6 +280,7 @@ void execute_shell_command(char** argv, char** argv_pipe){
 			close(fd[0]);
 			close(fd[1]);			
 			execvp(argv_pipe[0], argv_pipe);
+			printf("Command not found. Did you mean something else?\n");
 			exit(1);	
 		}
 		else if(pid != 0) {
