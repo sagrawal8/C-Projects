@@ -94,9 +94,6 @@ void outputCanvas(){
 }
 
 
-//Initialize mutex
-pthread_mutex_t mutex;
-
 // TODO: You will make code changes here.
 // Here is our thread function for painting with no locking implemented.
 // You may modify this code however you like.
@@ -124,25 +121,26 @@ for(int i =0; i < 5000; ++i){
         if(painter->y < 0) { painter->y = 0; }
         if(painter->y > CANVAS_HEIGHT-1) { painter->y = CANVAS_HEIGHT-1; }
    
-        // TODO: Implement some locking mechanism
-        // at first glance this seems okay, but convince yourself
-        // we can still have data races.
-        // I suggest investigating a 'trylock'
- 
-        if(pthread_mutex_trylock(&mutex)==0) {
-            if(canvas[painter->x][painter->y].r == 255 &&
+         
+        if(pthread_mutex_trylock(&canvas[painter->x][painter->y].lock)==0) {        
+        	if(canvas[painter->x][painter->y].r == 255 &&
              canvas[painter->x][painter->y].g == 255 &&
              canvas[painter->x][painter->y].b == 255){
-                canvas[painter->x][painter->y].r = painter->r;
-                canvas[painter->x][painter->y].g = painter->g;
-                canvas[painter->x][painter->y].b = painter->b;
-          }
-          pthread_mutex_unlock(&mutex);
+               	canvas[painter->x][painter->y].r = painter->r;
+               	canvas[painter->x][painter->y].g = painter->g;
+               	canvas[painter->x][painter->y].b = painter->b;        
+		      }    
+		      else {
+               painter->x = currentX;
+         		   painter->y = currentY;
+         }
+
+        	pthread_mutex_unlock(&canvas[painter->x][painter->y].lock);
         }
-        else {
-              painter->x = currentX;
-              painter->y = currentY; 
-         }        
+//        else {
+//        	  painter->x = currentX;
+//            painter->y = currentY;
+//       }        
    }
 }       
 
@@ -194,8 +192,6 @@ int main(){
 	pthread_t Leonardo_tid;
   // Initialize a seed for our random number generator
   srand(time(NULL));
-  //Initialize mutex  
-  pthread_mutex_init(&mutex,NULL);
 	
 	// Create our threads for each of our expert artists
 	pthread_create(&Michaelangelo_tid,NULL,(void*)paint,Michaelangelo);
