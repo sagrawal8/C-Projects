@@ -106,7 +106,7 @@ int check_dead = 0;
     artist_t* painter = (artist_t*)args;
     // Our artist will now attempt to paint 5000 strokes of paint
 	// on our shared canvas
-	for(int i =0; i < 5000; ++i){
+for(int i =0; i < 5000; ++i){
         
         // Store our initial position
         int currentX = painter->x;
@@ -130,15 +130,27 @@ int check_dead = 0;
         // I suggest investigating a 'trylock'
  
         if(pthread_mutex_trylock(&mutex)==0) {
-          if(canvas[painter->x][painter->y].r == 255 &&
-           canvas[painter->x][painter->y].g == 255 &&
-           canvas[painter->x][painter->y].b == 255){
-              canvas[painter->x][painter->y].r = painter->r;
-              canvas[painter->x][painter->y].g = painter->g;
-              canvas[painter->x][painter->y].b = painter->b;
-          }
-          pthread_mutex_unlock(&mutex);
+		painter->x += movement[roll][0];
+        	painter->y += movement[roll][1];
+          
+        	if(painter->x < 0) { painter->x = 0; }
+        	if(painter->x > CANVAS_WIDTH-1) { painter->x  = CANVAS_WIDTH-1; }
+        	if(painter->y < 0) { painter->y = 0; }
+        	if(painter->y > CANVAS_HEIGHT-1) { painter->y = CANVAS_HEIGHT-1; }
+          	if(canvas[painter->x][painter->y].r == 255 &&
+           	canvas[painter->x][painter->y].g == 255 &&
+           	canvas[painter->x][painter->y].b == 255){
+              		canvas[painter->x][painter->y].r = painter->r;
+              		canvas[painter->x][painter->y].g = painter->g;
+              		canvas[painter->x][painter->y].b = painter->b;
+         	 }
+		else {
+              		painter->x = currentX;
+             	 	painter->y = currentY; 
+         	}
+          	pthread_mutex_unlock(&mutex);
         }
+<<<<<<< HEAD
         else {
               painter->x = currentX;
               painter->y = currentY; 
@@ -180,6 +192,13 @@ int check_dead = 0;
 //        }
 //    }
 //}
+=======
+        
+        
+   }
+ }    
+      
+>>>>>>> aa7d86fac99b9f3c4c5d087f50296424d660adf5
 
 // ================== Program Entry Point ============
 int main(){

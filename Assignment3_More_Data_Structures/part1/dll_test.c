@@ -180,24 +180,13 @@ int unitTest8(int status){
 }
 
 int unitTest9(int status){
-    int passed  = 0;
-    dll_t* test = create_dll();
-    int i;
-    for(i = 0; i < 10; i++){
-     dll_insert(test, i, i);
-    }    
-    for(i =  0; i < 10; i++){
-        dll_remove(test, i);
-        print_dll(test);
-        dll_insert(test, i, 20);
-        print_dll(test);
-    }
-    print_dll(test);
-    if(10==dll_size(test)){
-       passed = 1;
-    }
-    free_dll(test);
-    return passed;
+    dll_t* t = create_dll();
+    int x;
+    x = dll_push_front(t, 10);
+    x = dll_remove(t, 0);
+    printf("%d\n", x);
+    free_dll(t);
+    return 1;
 }
 
 
