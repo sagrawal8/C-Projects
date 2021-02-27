@@ -2,14 +2,17 @@
 // or manually with 'clang -lpthread painters.c -o painters'
 
 // ===================== Include Libraries =====================
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <time.h>
+
 // ===================== Setup our Canvas =====================
 #define CANVAS_WIDTH 256
 #define CANVAS_HEIGHT 256
+
 
 // Our canvas is a shared piece of memory that each artist can access.
 // Within our canvas, every pixel has a red, green, and blue component.
@@ -114,14 +117,14 @@ for(int i =0; i < 5000; ++i){
         // Clamp the range of our movements so we only
         // paint within our 256x256 canvas.
         painter->x += movement[roll][0];
-        painter->y += movement[roll][1];
-          
+        painter->y += movement[roll][1];          
         if(painter->x < 0) { painter->x = 0; }
         if(painter->x > CANVAS_WIDTH-1) { painter->x  = CANVAS_WIDTH-1; }
         if(painter->y < 0) { painter->y = 0; }
         if(painter->y > CANVAS_HEIGHT-1) { painter->y = CANVAS_HEIGHT-1; }
-   
-         
+        
+          
+        //Paint if white 
         if(pthread_mutex_trylock(&canvas[painter->x][painter->y].lock)==0) {        
         	if(canvas[painter->x][painter->y].r == 255 &&
              canvas[painter->x][painter->y].g == 255 &&
@@ -129,18 +132,21 @@ for(int i =0; i < 5000; ++i){
                	canvas[painter->x][painter->y].r = painter->r;
                	canvas[painter->x][painter->y].g = painter->g;
                	canvas[painter->x][painter->y].b = painter->b;        
-		      }    
-		      else {
+		      } 
+            
+          else if(canvas[painter->x][painter->y].r != painter->r &&
+             canvas[painter->x][painter->y].g != painter->g &&
+             canvas[painter->x][painter->y].b != painter->b){		      
                painter->x = currentX;
          		   painter->y = currentY;
-         }
-
-        	pthread_mutex_unlock(&canvas[painter->x][painter->y].lock);
+          }
+          pthread_mutex_unlock(&canvas[painter->x][painter->y].lock);
+          pthread_yield();
         }
-//        else {
-//        	  painter->x = currentX;
-//            painter->y = currentY;
-//       }        
+        else {
+        	  painter->x = currentX;
+            painter->y = currentY;
+       }        
    }
 }       
 
@@ -206,16 +212,11 @@ int main(){
   //initialize starting position and colors for 50 artists
   //create threads
   for(int i = 0; i < rookieArtists; ++i){
-    moreArtists[i].x = rand()%253 + 1;
-    //printf("%d\n", moreArtists[i].x);
-    moreArtists[i].y = rand()%253 + 1;
-    //printf("%d\n", moreArtists[i].y);
-    moreArtists[i].r = rand()%253 + 1;
-    //printf("%d\n", moreArtists[i].r);
-    moreArtists[i].g = rand()%253 + 1;
-    //printf("%d\n", moreArtists[i].g);
-    moreArtists[i].b = rand()%253 + 1;
-    //printf("%d\n", moreArtists[i].b);
+    moreArtists[i].x = rand()%253 + 1;    
+    moreArtists[i].y = rand()%253 + 1;    
+    moreArtists[i].r = rand()%253 + 1;    
+    moreArtists[i].g = rand()%253 + 1;    
+    moreArtists[i].b = rand()%253 + 1;    
     pthread_create(&moreArtists_tid[i], NULL, (void*)paint, &moreArtists[i]);
     }
     
