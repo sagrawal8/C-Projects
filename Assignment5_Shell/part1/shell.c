@@ -233,7 +233,7 @@ int check_for_builtin(char** argv){
 	}else if(strcmp(argv[0], "GuessingGame") == 0) {
 		
 		guessingGame();
-		while ((getchar()) != ‘\n’);
+		while ((getchar()) != '\n');
 		return 1;
 	
 	}
