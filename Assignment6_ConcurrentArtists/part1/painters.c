@@ -93,26 +93,32 @@ void outputCanvas(){
 	fclose(fp);	
 }
 
+pthread_mutex_t mutex;
+
+
+
 // TODO: You will make code changes here.
 // Here is our thread function for painting with no locking implemented.
 // You may modify this code however you like.
 void* paint(void* args){
+int check_dead = 0;
     // Convert our argument structure to an artist
     artist_t* painter = (artist_t*)args;
-
     // Our artist will now attempt to paint 5000 strokes of paint
 	// on our shared canvas
 	for(int i =0; i < 5000; ++i){
-
+        
         // Store our initial position
         int currentX = painter->x;
         int currentY = painter->y;
         // Generate a random number from 0-7
         int roll = (rand()%8);
-        painter->x += movement[roll][0];
-        painter->y += movement[roll][1];
+        
         // Clamp the range of our movements so we only
         // paint within our 256x256 canvas.
+        painter->x += movement[roll][0];
+        painter->y += movement[roll][1];
+          
         if(painter->x < 0) { painter->x = 0; }
         if(painter->x > CANVAS_WIDTH-1) { painter->x  = CANVAS_WIDTH-1; }
         if(painter->y < 0) { painter->y = 0; }
@@ -123,22 +129,54 @@ void* paint(void* args){
         // we can still have data races.
         // I suggest investigating a 'trylock'
  
+        if(pthread_mutex_trylock(&mutex)==0) {
+          if(canvas[painter->x][painter->y].r == 255 &&
+           canvas[painter->x][painter->y].g == 255 &&
+           canvas[painter->x][painter->y].b == 255){
+              canvas[painter->x][painter->y].r = painter->r;
+              canvas[painter->x][painter->y].g = painter->g;
+              canvas[painter->x][painter->y].b = painter->b;
+          }
+          pthread_mutex_unlock(&mutex);
+        }
+        else {
+              painter->x = currentX;
+              painter->y = currentY; 
+         }
+        
+//          if(canvas[painter->x][painter->y].r == 255 &&
+//            canvas[painter->x][painter->y].g == 255 &&
+//            canvas[painter->x][painter->y].b == 255){
+//            canvas[painter->x][painter->y].r = painter->r;
+//            canvas[painter->x][painter->y].g = painter->g;
+//            canvas[painter->x][painter->y].b = painter->b; 
+//            check_dead++;           
+//          }      
+//          else {
+//              painter->x = currentX;
+//              painter->y = currentY; 
+//          }        
+//          pthread_mutex_unlock(&mutex);
+//        }        
+   }
+ }    
+               
         // Try to paint
         // paint the pixel if it is white.
-        if( canvas[painter->x][painter->y].r == 255 &&
-            canvas[painter->x][painter->y].g == 255 &&
-            canvas[painter->x][painter->y].b == 255){
-                canvas[painter->x][painter->y].r = painter->r;
-                canvas[painter->x][painter->y].g = painter->g;
-                canvas[painter->x][painter->y].b = painter->b;
-        }else{
+//        if( canvas[painter->x][painter->y].r == 255 &&
+//            canvas[painter->x][painter->y].g == 255 &&
+//            canvas[painter->x][painter->y].b == 255){
+//                canvas[painter->x][painter->y].r = painter->r;
+//                canvas[painter->x][painter->y].g = painter->g;
+//                canvas[painter->x][painter->y].b = painter->b;
+//        }else{
         // If we cannot paint the pixel, then we backtrack
         // to a previous pixel that we own.
-            painter->x = currentX;
-            painter->y = currentY;
-        }
-    }
-}
+//            painter->x = currentX;
+//            painter->y = currentY;
+//        }
+//    }
+//}
 
 // ================== Program Entry Point ============
 int main(){
@@ -179,13 +217,15 @@ int main(){
 	Leonardo->g = 0;
 	Leonardo->b = 255;
 
-    // Hold our thread id's
+  // Hold our thread id's
 	pthread_t Michaelangelo_tid;
 	pthread_t Donatello_tid;
 	pthread_t Raphael_tid;
 	pthread_t Leonardo_tid;
-    // Initialize a seed for our random number generator
-    srand(time(NULL));
+  // Initialize a seed for our random number generator
+  srand(time(NULL));
+  //Initialize mutex  
+  pthread_mutex_init(&mutex,NULL);
 	
 	// Create our threads for each of our expert artists
 	pthread_create(&Michaelangelo_tid,NULL,(void*)paint,Michaelangelo);
@@ -194,11 +234,25 @@ int main(){
 	pthread_create(&Leonardo_tid,NULL,(void*)paint,Leonardo);
 
     // TODO: Add 50 more artists 
-    // int rookieArtists = 50;
-    // pthread_t moreArtists_tid[rookieArtists];
-	// artist_t* moreArtists = malloc(..);
-    // for(int i =0; i < rookieArtists; ++i){
-
+  int rookieArtists = 50;
+  pthread_t moreArtists_tid[rookieArtists];
+	artist_t* moreArtists = malloc(50 * sizeof(artist_t));
+  //initialize starting position and colors for 50 artists
+  //create threads
+  for(int i = 0; i < rookieArtists; ++i){
+    moreArtists[i].x = rand()%253 + 1;
+    //printf("%d\n", moreArtists[i].x);
+    moreArtists[i].y = rand()%253 + 1;
+    //printf("%d\n", moreArtists[i].y);
+    moreArtists[i].r = rand()%253 + 1;
+    //printf("%d\n", moreArtists[i].r);
+    moreArtists[i].g = rand()%253 + 1;
+    //printf("%d\n", moreArtists[i].g);
+    moreArtists[i].b = rand()%253 + 1;
+    //printf("%d\n", moreArtists[i].b);
+    pthread_create(&moreArtists_tid[i], NULL, (void*)paint, &moreArtists[i]);
+    }
+    
 	// Join each with the main thread.  
 	// Do you think our ordering of launching each thread matters?
 	pthread_join(Michaelangelo_tid, NULL);		   
@@ -206,8 +260,10 @@ int main(){
 	pthread_join(Raphael_tid, NULL);		   
 	pthread_join(Leonardo_tid, NULL);		   
 
-    // TODO: Add the join the 50 other artists threads here	
-    // for (...)
+    //Added the join the 50 other artists threads here	
+    for (int i = 0; i < rookieArtists; i++) {
+      pthread_join(moreArtists_tid[i],NULL);
+    }
 
     // Save our canvas at the end of the painting session
 	outputCanvas();
@@ -217,7 +273,7 @@ int main(){
     free(Donatello);
     free(Raphael);
     free(Leonardo);
-
+    free(moreArtists);
     // TODO: Free any other memory you can think of
 
 	return 0;
