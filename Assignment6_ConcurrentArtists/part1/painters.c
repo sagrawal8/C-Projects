@@ -93,9 +93,9 @@ void outputCanvas(){
 	fclose(fp);	
 }
 
+
+//Initialize mutex
 pthread_mutex_t mutex;
-
-
 
 // TODO: You will make code changes here.
 // Here is our thread function for painting with no locking implemented.
@@ -142,8 +142,11 @@ int check_dead = 0;
         else {
               painter->x = currentX;
               painter->y = currentY; 
-         }
-        
+         }        
+   }
+}       
+
+
 //          if(canvas[painter->x][painter->y].r == 255 &&
 //            canvas[painter->x][painter->y].g == 255 &&
 //            canvas[painter->x][painter->y].b == 255){
@@ -158,8 +161,8 @@ int check_dead = 0;
 //          }        
 //          pthread_mutex_unlock(&mutex);
 //        }        
-   }
- }    
+//   }
+// }    
                
         // Try to paint
         // paint the pixel if it is white.
