@@ -104,19 +104,19 @@ At a high level, implementing mini-shell takes the following components:
 -----------------------------------------------------
 NAME: 
 
-*edit me*
+GuessingGame
 
 SYNOPSIS: 
 
-*edit me and add in a short description of the command and its usage*
+Command: GuessingGame
 
 DESCRIPTION:
 
-*Write a longer description of what he command does*
+Asks the user to guess a random generated number between 1 and 10. Prompts the user on whether the guess is higher or lower.
 
 NOTES:
 
-*Enter two or three sentences (minimum) in how you implemented the built-in command.*
+Made a separate function for the game. Used srand(time) to get a random generated number with a varying seed. Similar to Assignment 1.
 
 -----------------------------------------------------
 
