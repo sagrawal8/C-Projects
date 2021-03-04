@@ -161,7 +161,9 @@ This means you need to enforce some locking mechanism.
 
 **Discuss(in a few sentences)** how starvation may occur in the above program, and how you would possibly fix it? (You may fix it in your implementation if you like--the art may become more beautiful!)
 
-*edit and add your response here*
+Worst type of starvation: Deadlock - If I forgot to unlock a lock, the piece of code within the lock will never get accessed by any other thread as it will stay locked permanently, and will lead to a deadlock. Can be fixed by unlocking.
+ 
+General Starvation: Infinite loop within locked code, High Big O complexity for locked code.  
 
 ## Rubric
 
