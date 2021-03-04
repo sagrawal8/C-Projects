@@ -163,7 +163,7 @@ This means you need to enforce some locking mechanism.
 
 Worst type of starvation: Deadlock - If I forgot to unlock a lock, the piece of code within the lock will never get accessed by any other thread as it will stay locked permanently, and will lead to a deadlock. Can be fixed by unlocking.
  
-General Starvation: Infinite loop within locked code, High Big O complexity for locked code.  
+General Starvation: Infinite loop within locked code, High Big O complexity for locked code; Fixed by optimization.
 
 ## Rubric
 
