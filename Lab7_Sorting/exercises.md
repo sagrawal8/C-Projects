@@ -9,7 +9,7 @@
 
 ## Answers:
 
-1. *edit your answer here for question 1*
-2. *edit your answer here for question 2*
-3. *edit your answer here for question 3*
-4. *edit your answer here for question 4*
+1. O(n^2)
+2. Omega(n^2)
+3. No
+4. No
