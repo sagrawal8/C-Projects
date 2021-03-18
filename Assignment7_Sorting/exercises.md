@@ -10,7 +10,7 @@ Discuss and answer the following questions (Please make sure to elaborate and ju
 
 ## Answers:
 
-1. *edit your answer here for question 1*
-2. *edit your answer here for question 2*
-3. *edit your answer here for question 3*
-4. *edit your answer here for question 4*
+1. O(n^2)
+2. O(n); array = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1} or array = {1,2,3,4,5,6,7,8,9}
+3. No it sorts elements in the same array by swapping values within the array.
+4. A sorting algorithm is said to be stable if two objects with equal keys appear in the same order in sorted output as they appear in the input array to be sorted. Insertion sort is stable as it only swaps values if array[j+1] < array[j] and not if array[j+1] <= array[j].
