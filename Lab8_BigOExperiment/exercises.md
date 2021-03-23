@@ -44,16 +44,19 @@ Yes it is better
 List the following functions in terms of their Big-O complexity from **smallest** to **largest**.
 <img src="./media/bigo.jpg"/>
 
-1. *edit your answer here for question 6*
+n < logn < n^2 < n^3 < 2^n < n!
 
 # Exercise 7
 
 - Given: f(n) = 3n^3 + n^2 + 27
 - What is the O(n) of f(n)?
 
-1. *edit your answer here for question 7*
+O(n^3)
 
 # Exercise 8
 
 - Given: f(n) = 3n^3 + n^2 + 27
 - What are two constants c and k that prove your answer in exercise 7.
+
+c = 31
+k = 1
