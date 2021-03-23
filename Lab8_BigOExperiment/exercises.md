@@ -4,31 +4,40 @@ Please edit this document below with your responses. Each question is worth 1/8 
 
 1. Record here how long it took you to run bubblesort and csort (Note: If you want to run several trials, say '10' and take an average that is an even better result!).
 
-*edit your answer here for question 1*
+Bubble Sort:
+real 0.355s
+user 0.352s
+sys 0.002s
+
+CSort:
+real 0.009	
+user 0.006	
+sys 0.003
 
 # Exercise 2
 
 What is the Big-O complexity of bubblesort?
 
-1. *edit your answer here for question 2*
+O(n^2)
 
 # Exercise 3
 
 Do a little research and discover what algorithm qsort is in the C standard library. What is the algorithm? https://en.wikipedia.org/wiki/Qsort
 
-1. *edit your answer here for question 3*
+Quick sort algorithm.
+The comparator function takes two void pointers, p1 and p2, as arguments and returns their difference; this is how qsort() determines which element is smaller, or larger, than the other.
 
 # Exercise 4
 
 What is the Big-O complexity of 'qsort' that we use in the csort program?
 
-1. *edit your answer here for question 4*
+O(logn)
 
 # Exercise 5
 
 Is qsort's Big-O complexity better or worse than bubblesort? (Anser: Yes it is better/ No it is worse/ It is equal)
 
-1. *edit your answer here for question 5*
+Yes it is better
 
 # Exercise 6
 
