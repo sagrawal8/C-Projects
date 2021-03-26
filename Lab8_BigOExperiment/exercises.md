@@ -31,7 +31,7 @@ The comparator function takes two void pointers, p1 and p2, as arguments and ret
 
 What is the Big-O complexity of 'qsort' that we use in the csort program?
 
-O(logn)
+O(n^2)
 
 # Exercise 5
 
