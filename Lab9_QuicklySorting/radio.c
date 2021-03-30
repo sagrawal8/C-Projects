@@ -71,11 +71,32 @@ void bruteForceSort(char** array, unsigned int start, unsigned int end){
 // @Name    partition
 // @Brief   Helper funcion for quicksort
 int partition(char** array, unsigned int low, unsigned int high){
-    // TODO:
+    char** pivot = &array[high];
+    int i = (low - 1);
+    for (int j = low; j <= high - 1; j++) {
+        if(strcmp(array[j], *pivot) <= 0) {
+            i++;
+            swapStrings(&array[i], &array[j]);
+        }
+    }
+    swapStrings(&array[i + 1], &array[high]);
+    return (i+1);
 }
 
 void quicksort(char** array, unsigned int low, unsigned int high){
-    // TODO:
+    if (low < high)
+    {
+        // pivot here is the partitioning index
+          // This means array[pivot] is at the correct 
+              // position and will not need to  move
+              int pivot = partition(array, low, high);
+                          
+        // Recurse on the left and right side of the pivot
+        // Note: The offsets of -1 and +1 to avoid the pivot.
+              quicksort(array, low, pivot - 1);  // Before pivot
+              quicksort(array, pivot + 1, high); // After pivot
+           
+    } 
 }
 
 
@@ -85,7 +106,7 @@ int main(){
   char** musicDatabase1 = loadMusicFile("./musicdatabase.txt",13594);
   char** musicDatabase2 = loadMusicFile("./musicdatabase.txt",13594);
   // Print out a portion of the music database.
-  printf("The first 10 entries of 13594 unsorted are...\n"); 
+  printf("The first 10 entries of 13593 unsorted are...\n"); 
   printArrayOfCharStrings(musicDatabase1,0,10);
   printf("\n");
   
@@ -95,7 +116,7 @@ int main(){
   clock_t start1,end1;
   start1 = clock();
   // perform bruteForceSort after starting your timer
-  bruteForceSort(musicDatabase1,0,13594);
+  bruteForceSort(musicDatabase1,0,13593);
   end1 = clock(); 
   double experiment1 = ((double)(end1-start1)/CLOCKS_PER_SEC);
    // ===========================================
@@ -107,7 +128,7 @@ int main(){
   clock_t start2,end2;
   start2 = clock();
   // perform quicksort after starting your timer
-  quicksort(musicDatabase2,0,13594);  
+  quicksort(musicDatabase2,0,13593);  
   end2 = clock();
   double experiment2 = ((double)(end2-start2)/CLOCKS_PER_SEC);
   // ===========================================
