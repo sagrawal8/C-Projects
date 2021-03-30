@@ -8,20 +8,19 @@
 
 1. Explain: What do you think the Big-O (worst-case) complexity of the merge sort algorithm is and why? 
 
-*edit your answer here for Task 2 question 1*
+O(nlogn); n levels to split and logn sub arrays that are the product of splitting.
 
 2. Explain: What do you think the best-case complexity of the merge sort algorithm is and why?
-
-*edit your answer here for Part 2 question 2*
+Big Omega (nlogn) as Big Omega(nlogn) < Big O(nlogn). Best case is if the array is already sorted. Then merge(arr, l, m, r) doesnt need to compare the values.
 
 3. Does merge sort require any additional storage beyond the original array? If so how much and why?
 
-*edit your answer here for Part 2 question 3*
+Yes, it requires 2 temp arrays for the left and right sides. Both arrays together have a size equal to the original array.
 
 4. How much time in Big-O does it take to merge all of the subarrays together? Explain or draw why?
 
-*edit your answer here for Part 2 question 4*
-
+  O(n * l * r). 
+  The merging subarray steps iterates through the entire left and right arrays and does so for each level for splitting.
 
 ## Interview Prep (Optional +1% Bonus on assignment)
 
