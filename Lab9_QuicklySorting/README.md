@@ -98,7 +98,7 @@ void swapStrings(char** s1, char** s2){
 
 <!--**Answer the following with your partner:**--> **Answer the following here**: How do you think the strcmp function is implemented? i.e. What would your algorithm be in a sentence or two?
 
-*edit your answer here*
+Iterate through both strings and compare the ASCII values of each character at same index until a greater ASCII value is found.
 
 # Part 3 - Quick sort
 
