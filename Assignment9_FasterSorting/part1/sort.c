@@ -9,11 +9,54 @@
 // First subarray is arr[l..m] 
 // Second subarray is arr[m+1..r] 
 void merge(int arr[], int l, int m, int r) {
-  //TODO: implement merge.
+    int sizeLeft = m - l + 1;
+    int sizeRight = r - m;
+    int left[sizeLeft];
+    int right[sizeRight];
+    
+    for(int i = 0; i < sizeLeft; i++) {
+        left[i] = arr[l + i];
+    }
+     for(int j = 0; j < sizeRight; j++) {
+        right[j] = arr[m + 1 + j];
+    }
+    
+    int i = 0;
+    int j = 0;
+    int k = l;
+    
+    while(i < sizeLeft && j < sizeRight) {
+        if (left[i] <= right[j]) {
+            arr[k] = left[i];
+            i++;
+        }
+        else {
+            arr[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < sizeLeft) {
+        arr[k] = left[i];
+        i++;
+        k++;
+    }
+    while (j < sizeRight) {
+        arr[k] = right[j];
+        j++;
+        k++;
+    }  
 }
 
 // Implement your mergeSort function here
-// TODO:
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = (l + r)/2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+} 
 
 // Provided below is a sort function. We have also
 // provided a template for how to document functions
@@ -25,14 +68,14 @@ void merge(int arr[], int l, int m, int r) {
 //          (2) 'size' tells us how big the array of data is we are sorting.
 // Output: No value is returned, but 'array' should be modified to store a sorted array of numbers.
 void sortIntegers(int* array, unsigned int size){
-    // TODO: make a call to your mergeSort function here
+    mergeSort(array, 0, size - 1); 
 }
 
 
 // Input: A pointer to an array (i.e. the array itself points to the first index)
 //        The size of the array (Because we do not know how big the array is automatically)
 void printIntArray(int* array, unsigned int size){
-  unsigned int i; // Note: 'unsigned int' is a datatype for storing positive integers.
+  int i; // Note: 'unsigned int' is a datatype for storing positive integers.
   for(i = 0; i < size; i=i+1){
     printf("%d ",array[i]);
   }
