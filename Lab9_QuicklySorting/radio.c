@@ -28,6 +28,15 @@ char** loadMusicFile(const char* fileName, int size){
   return database;
 }
 
+void freeArray(char** array){
+    for (int i = 0; i < 13594; i++) 
+    {
+        free(array[i]);
+    }
+    free(array);
+    printf("hi\n");
+}
+
 
 // @Name    printArrayOfCharStrings
 // @Brief   Prints an array of C-style strings
@@ -144,6 +153,7 @@ int main(){
   printf("\nResults of sorting:\n");
   printf("%f time taking for brute force\n", experiment1);
   printf("%f time taking for quick sort\n", experiment2);
-  
+  freeArray(musicDatabase1);
+  freeArray(musicDatabase2); 
   return 0;
 }
