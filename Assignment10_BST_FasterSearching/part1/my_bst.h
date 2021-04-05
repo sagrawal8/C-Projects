@@ -39,10 +39,16 @@ typedef struct bst{
 bst_t* bst_create();
 int bst_empty(bst_t* t);
 int bst_add(bst_t* t, int item);
+int bst_addHelper(bstnode_t* node, int item);
 void bst_print(bst_t *t, int order);
+void printInOrder(bstnode_t* node);
+void printPostOrder(bstnode_t* node);
 int bst_sum(bst_t *t);
+int bst_sumHelper(bstnode_t* node, int sum);
 int bst_find(bst_t * t, int value);
+int bst_findHelper(bstnode_t* node, int value);
 unsigned int bst_size(bst_t* t);
 void bst_free(bst_t* t);
+void bst_freeHelper(bstnode_t* node);
 
 #endif
