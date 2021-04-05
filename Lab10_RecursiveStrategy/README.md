@@ -56,11 +56,12 @@ Once you have solved the above, answer and modify your programs for the followin
 
 1. If you want to compute a bigger factorial, you will need a larger data type. What is a bigger [data type](https://www.geeksforgeeks.org/data-types-in-c/) you can use to compute larger factorials? Change the 'return type' and input parameters to the factorial to something other than 'int' (and also change the format specifier in printf to something other than %d for the largest C data type you can find).
 
- *put in a brief answer here to the experiment from question 1 for what data type you changed your facotorial to use*
+ Changed it to long double since it has one of the largest ranges between data types.
 
 2. Try <!-- with your partner --> computing factorials larger than say 15. At what input value for the factorial functions does your computer start to 'crash' or really slow down when you try to compute a factorial? Experiment and report your results.
 
- *put in a brief answer here to the experiment from question 2*
+ Iterative process: after 10000000.
+ Recursive Process: after 100000 (Seg fault)
 
 ## Compiling and running the program.
 
