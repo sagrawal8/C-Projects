@@ -3,23 +3,28 @@
 
 #include <stdio.h>
 
-// TODO: Implement iterative solution here
-int factorial(int n){
-
-  return 0;
+long double factorial(long double n){
+    long double result = 1;    
+    for(long double i = n; i > 0; i--)
+    {
+        result = result * i;
+    }
+    return result;
 };
 
-// TODO: Implement recursive solution here
-int factorial_rec(int n){
-
-  return 0;
+long double factorial_rec(long double n){
+    
+    if(n == 0){
+        return 1;
+    }
+    return n*factorial_rec(n - 1); 
 }
 
 int main(){
 
   // Both of these should print the same result!
-  printf("factorial(10) = %d\n",factorial(10));
-  printf("factorial_rec(10) = %d\n",factorial_rec(10));
+  printf("factorial(100000000) = %Lf\n",factorial(100000000));
+  printf("factorial_rec(10) = %Lf\n",factorial_rec(100000));
 
 
   return 0;

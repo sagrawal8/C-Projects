@@ -20,9 +20,12 @@ typedef struct TreeNode{
 // Make sure to print out each node you visit, and only print it out once!
 // **Hint** Think recursively
 void dfs(TreeNode_t* start){
-    // TODO: Hmm, how can I look through both branches of the node?
-    //       Hmm, when do I stop?
-    //
+    if(start == NULL) {
+        return;
+    }
+    printf("%c\n",start->data);
+    dfs(start->left);
+    dfs(start->right);
 }
 
 int main(){
