@@ -10,10 +10,10 @@ Discuss and answer the following questions (Make sure to elaborate and justify y
 
 ## Answers
 
-1. *edit your answer here*
-2. *edit your answer here*
-3. *edit your answer here*
-4. *edit your answer here*
+1. Left and right subtrees are of equal height. Height = log(n) where n is number of elements in tree.
+2. O(logn)ik           
+3. If the binary tree is similar to a linear array ie. all children are left childs or all children are right childs, then the search would be O(n).
+4. a = 1 or 2, b = 2, f(n) = O(1) or a constant;
 
 
 
