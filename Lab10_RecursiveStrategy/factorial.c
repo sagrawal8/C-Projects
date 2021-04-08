@@ -23,8 +23,8 @@ long double factorial_rec(long double n){
 int main(){
 
   // Both of these should print the same result!
-  printf("factorial(100000000) = %Lf\n",factorial(100000000));
-  printf("factorial_rec(10) = %Lf\n",factorial_rec(100000));
+  printf("factorial(100000000) = %Lf\n",factorial(1000000));
+  printf("factorial_rec(10) = %Lf\n",factorial_rec(1000));
 
 
   return 0;
