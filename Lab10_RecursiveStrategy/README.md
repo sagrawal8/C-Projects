@@ -62,6 +62,8 @@ Once you have solved the above, answer and modify your programs for the followin
 
  Iterative process: after 10000000.
  Recursive Process: after 100000 (Seg fault), everything is stored on the stack and the stack can only go so big.
+ 
+ The values are inf however.
 
 ## Compiling and running the program.
 
