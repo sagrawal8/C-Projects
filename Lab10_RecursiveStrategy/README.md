@@ -61,7 +61,7 @@ Once you have solved the above, answer and modify your programs for the followin
 2. Try <!-- with your partner --> computing factorials larger than say 15. At what input value for the factorial functions does your computer start to 'crash' or really slow down when you try to compute a factorial? Experiment and report your results.
 
  Iterative process: after 10000000.
- Recursive Process: after 100000 (Seg fault)
+ Recursive Process: after 100000 (Seg fault), everything is stored on the stack and the stack can only go so big.
 
 ## Compiling and running the program.
 
