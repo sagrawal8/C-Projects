@@ -93,23 +93,36 @@ void printGraph(int* g){
 // For a given node 'n' in an adjacency matrix,
 // compute the in-degree.
 int nodeInDegree(int* g, int node){
-    // TODO
-    return 999999;
+    int count = 0; 
+    for (int j = 0; j < COLUMNS; j++) {
+        if(g[5*node+j] == 1){
+            count++;
+        }
+    }
+    return count;
 }
 
 // Compute 'out-degree' of a node
 // For a given node 'n' in an adjacency matrix,
 // compute the out-degree.
 int nodeOutDegree(int* g, int node){
-    // TODO
-    return 999999;
+    int count = 0;
+    for(int i = 0; i < ROWS; i++){
+        if(g[i*ROWS + node] == 1){
+            count ++;
+        }
+    }
+    return count;
 }
 
 
 // Figure out if two nodes are connected
 // Returns a 1 if node1 is connected to node 2
 int isConnected(int* g, int node1, int node2){
-    // TODO
+    if(g[node1*ROWS + node2] == 1)
+    {
+        return 1;
+    }
     return 0;
 }
 
@@ -117,27 +130,28 @@ int main(){
  
     int g_testgraph[ROWS][COLUMNS];
     // Generate a random graph
-    generateGraph(&g_testgraph);
+    generateGraph(&g_testgraph[0][0]);
     // Print out the graph
-    printGraph(&g_testgraph);
+    printGraph(&g_testgraph[0][0]);
     // Print out the nodeInDegree of each of the
     // five nodes
     int i=0;
     for(i =0; i < COLUMNS; ++i){
-        printf("node %d in-degree= %d\n",i,nodeInDegree(&g_testgraph,i));
+        printf("node %d in-degree= %d\n",i,nodeInDegree(&g_testgraph[0][0],i));
     }
     // Print out the nodeInDegree of each of the
     // five nodes
     i=0;
     for(i =0; i < COLUMNS; ++i){
-        printf("node %d out-degree= %d\n",i,nodeOutDegree(&g_testgraph,i));
+        printf("node %d out-degree= %d\n",i,nodeOutDegree(&g_testgraph[0][0],i));
     }
     // Check which nodes '0' is connected to
-    printf("Node 0 connections:");
+    printf("Node 0 connections: ");
     int j;
     for(j =0; j < COLUMNS; ++j){
-        printf("%d ",isConnected(&g_testgraph,0,j));
+        printf("%d ",isConnected(&g_testgraph[0][0],0,j));
     }
+    printf("\n");
 
     return 0;
 }

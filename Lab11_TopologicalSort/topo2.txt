@@ -1,2 +1,10 @@
 eat sleep
 eat exercise
+eat gym
+run shower
+gym shower
+game study
+study game
+lecture party
+party lecture
+sleep exercise
