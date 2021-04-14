@@ -52,7 +52,17 @@ dll_t* create_dll(){
 // Returns 0 if false (the DLL has at least one element enqueued)
 // Returns -1 if the dll is NULL.
 int dll_empty(dll_t* l){
-    return -1;
+    if(l){
+        if(l->count == 0){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+    else{
+        return -1;
+    }
 }
 
 // push a new item to the front of the DLL ( before the first node in the list).
@@ -61,7 +71,29 @@ int dll_empty(dll_t* l){
 // Returns -1 if DLL is NULL.
 // (i.e. the memory allocation for a new node failed).
 int dll_push_front(dll_t* l, void* item){
-    return -1;
+    if(!l){
+        return -1;
+    }
+    else{
+        node_t* node = (node_t*)malloc(sizeof(node_t));
+        node->data = item;
+        if(dll_empty(l)){
+            l->head = node;
+            l->tail = node;
+            node->next = NULL;
+            node->previous = NULL;
+        }
+        else{
+            l->head->previous = node;
+            node->next = l->head;
+            node->previous = NULL;
+            l->head = node;
+        }
+        l->count++;
+        return 1;      
+    }
+
+    return 0;
 }
 
 // push a new item to the end of the DLL (after the last node in the list).
@@ -70,7 +102,29 @@ int dll_push_front(dll_t* l, void* item){
 // Returns -1 if DLL is NULL.
 // (i.e. the memory allocation for a new node failed).
 int dll_push_back(dll_t* l, void* item){
+    if(!l){
         return -1;
+    }
+    else{
+        node_t* node = (node_t*)malloc(sizeof(node_t));
+        node->data = item;
+        if(dll_empty(l)){
+            l->head = node;
+            l->tail = node;
+            node->next = NULL;
+            node->previous = NULL;
+        }
+        else{
+            l->tail->next = node;
+            node->previous = l->tail;
+            node->next = NULL;
+            l->tail = node;
+        }
+        l->count++;
+        return 1;
+    }
+
+    return 0;
 }
 
 // Returns the first item in the DLL and also removes it from the list.
@@ -79,7 +133,29 @@ int dll_push_back(dll_t* l, void* item){
 // Assume no negative numbers in the list or the number zero.
 void* dll_pop_front(dll_t* t){
 
-        return -1; // Note: This line is a 'filler' so the code compiles.
+    if(!t){
+        return (void*)-1;
+    }
+    else{
+        if(dll_empty(t)){
+            return 0;
+        }
+        else{            
+            node_t* node = t->head;
+            void* x; 
+            x = node->data;
+            if(t->count == 1){
+                t->tail = NULL;
+            }
+            else{
+                t->head->next->previous = NULL;
+            }
+            t->head = t->head->next;
+            t->count--;
+            free(node);
+            return x;
+        }
+    }
 }
 
 // Returns the last item in the DLL, and also removes it from the list.
@@ -88,7 +164,30 @@ void* dll_pop_front(dll_t* t){
 // Assume no negative numbers in the list or the number zero.
 void* dll_pop_back(dll_t* t){
 
-        return -1; // Note: This line is a 'filler' so the code compiles.
+    if(!t){
+        return (void*)-1;
+    }
+    else{
+        if(dll_empty(t)){
+            return 0;
+        }
+        else{
+            node_t* node = t->tail;
+            void* x;
+            x = node->data;
+            if(t->count == 1){
+                t->head = NULL;
+            }
+            else{
+                t->tail->previous->next = NULL;
+            }
+            t->tail = t->tail->previous;
+            t->count--;
+            free(node);
+            return x;
+
+        }
+    }
 }
 
 // Inserts a new node before the node at the specified position.
@@ -101,7 +200,37 @@ void* dll_pop_back(dll_t* t){
 // Returns -1 if the list is NULL
 int dll_insert(dll_t* l, int pos, void* item){
         
-        return -1; // Note: This line is a 'filler' so the code compiles.
+     if(!l){        
+        return -1;
+    }
+    else if(pos < 0 || pos > l->count){
+        return 0;
+    }
+    else if(pos == l->count){
+        dll_push_back(l, item);
+        return 1;
+    }
+    else if(pos == 0){
+        dll_push_front(l, item);
+        return 1;
+    }
+    else{        
+        int i;
+        node_t* iterator;
+        iterator = l->head;
+        for(i = 0; i < pos; i++){
+            iterator = iterator->next;
+        }
+        node_t* node;
+        node = (node_t*)malloc(sizeof(node_t));
+        node->next = iterator;
+        iterator->previous->next = node;
+        node->previous = iterator->previous;
+        iterator->previous = node;
+        node->data = item;
+        l->count++;
+        return 1;
+    }
 }
 
 // Returns the item at position pos starting at 0 ( 0 being the first item )
@@ -112,7 +241,21 @@ int dll_insert(dll_t* l, int pos, void* item){
 // Returns -1 if the list is NULL
 // Assume no negative numbers in the list or the number zero.
 void* dll_get(dll_t* l, int pos){
-        return NULL; // Note: This line is a 'filler' so the code compiles.
+      if(!l){
+        return (void* )-1;
+    }
+    else if(pos < 0 || pos >= l->count){
+        return 0;
+    }
+    else{
+        int i;
+        node_t* iterator = l->head;
+
+        for(i = 0; i < pos; i++){
+            iterator = iterator->next;
+        }
+        return iterator->data;
+    }
 }
 
 // Removes the item at position pos starting at 0 ( 0 being the first item )
@@ -123,22 +266,67 @@ void* dll_get(dll_t* l, int pos){
 // Assume no negative numbers in the list or the number zero.
 void* dll_remove(dll_t* l, int pos){
         
-        return NULL; // Note: This line is a 'filler' so the code compiles.
+   if(!l){
+        return (void*)-1;
+    }
+    else if(pos < 0 || pos >= l->count){
+        return 0;
+    }
+    else if(pos == l->count - 1){
+         return dll_pop_back(l);
+    }
+    else if(pos == 0){
+        return dll_pop_front(l);
+    }
+    else{
+        int i;
+        node_t* iterator = l->head;
+
+        for(i = 0; i < pos; i++){
+            iterator = iterator->next;
+        }
+        void* x;
+        x = iterator->data;
+        iterator->previous->next = iterator->next;
+        iterator->next->previous = iterator->previous;
+        l->count--;
+        return x;
+    }
 }
 
 // DLL Size
 // Queries the current size of a DLL
 // Returns -1 if the DLL is NULL.
 int dll_size(dll_t* t){
-    
-        return -1; // Note: This line is a 'filler' so the code compiles.
+  if(t){
+        return t->count; // Note: This line is a 'filler' so the code compiles.
+    }   
+    else{
+        return -1;
+    }  
+  
 }
 
 // Free DLL
 // Removes a DLL and all of its elements from memory.
 // This should be called before the proram terminates.
 void free_dll(dll_t* t){
-
+    if(dll_empty(t) == 1){
+        free(t);
+        return;
+    }
+    node_t* node = t->head;
+    node_t* temp;
+    if(t->count != 0){
+        while(node->next){
+            temp = node->next;
+            free(node);
+            node = temp;
+        }
+    }
+    free(node);
+    free(t);        
+    return;
 }
 
 
