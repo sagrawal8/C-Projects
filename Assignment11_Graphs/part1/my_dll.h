@@ -290,6 +290,7 @@ void* dll_remove(dll_t* l, int pos){
         iterator->previous->next = iterator->next;
         iterator->next->previous = iterator->previous;
         l->count--;
+        free(iterator);
         return x;
     }
 }
