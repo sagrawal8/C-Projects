@@ -150,9 +150,8 @@ Okay, now that you understand the data structure, you will implement two functio
 
 Your answers here:
 
-1. *edit your response*
-2. *edit your response*
-
+1. O(N*N) space = O(N^2) space
+2. No it should always be a square matrix by definition.
 
 ## Compiling and running the program.
 
@@ -202,10 +201,9 @@ eat exercise
 3. For question number 2, how would you know you have a cycle in a graph? What algorithm or strategy could you use to detect the cycles? **Hint** we have already learned about this traversal.
 
 Your answer:
-
-1. *edit your response*
-2. *edit your response*
-3. *edit your response*
+1. No, it would be hard to find which node comes before/after which node.
+2. No, it would not take the cycle into account and will produce the text 'a cycle exists in your graph'.
+3. tsort will produce the above mentioned text. DFS can help detect a cycle. 
 
 
 # Deliverable
