@@ -19,6 +19,14 @@ int main(int argc, const char * argv[]) {
     graph_add_node(graph, 1);
     graph_add_node(graph, 1);
     graph_add_node(graph, 2);
-    printf("total nodes: 2==%d\n", graph_num_nodes(graph));
+    graph_add_node(graph, 5);
+    graph_add_edge(graph, 1,2);
+    graph_add_edge(graph,2,1);
+    graph_add_edge(graph,1,5);
+    graph_add_edge(graph,2,5);
+    print_graph(graph);
+    graph_remove_node(graph, 1);
+    print_graph(graph);
+    free_graph(graph);
     return 0;
 }

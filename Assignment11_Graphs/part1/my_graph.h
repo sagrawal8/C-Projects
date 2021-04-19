@@ -135,11 +135,12 @@ int graph_remove_node(graph_t* g, int value){
             dll_remove(g->nodes, count);
             return 1;
         }
+        itr = itr->next;
         count++;            
     }
                                
 
- return 0;   
+    return 0;   
 }
 
 // Returns 1 on success
@@ -202,7 +203,7 @@ int graph_remove_edge(graph_t * g, int source, int destination){
         inItr = inItr->next;
     }
     count = 0;
-     while(outItr != NULL) {
+    while(outItr != NULL) {
         graph_node_t* graphNode = outItr->data;
         if(graphNode->data == destination){
             dll_remove(outNeighborNode->outNeighbors, count);
@@ -256,7 +257,18 @@ int graph_num_edges(graph_t* g){
 // This should be called before the program terminates.
 // Make sure you free all the dll's too.
 void free_graph(graph_t* g){
-
+    node_t* itr = g->nodes->head;
+    while(itr != NULL) {
+        node_t* temp = itr->next;
+        graph_node_t* each = itr->data;
+        free_dll(each->inNeighbors);
+        free_dll(each->outNeighbors);
+        free(each);
+        free(itr);
+        itr = temp;
+    }
+    free(g->nodes);
+    free(g);
 }
 
 void print_graph(graph_t* g) {
