@@ -94,14 +94,14 @@ int graph_add_node(graph_t* g, int value){
     
     return 1;
 }
-
+int graph_remove_edge(graph_t * g, int source, int destination);
 // Returns 1 on success
 // Returns 0 on failure ( or if the node doesn't exist )
 // Returns -1 if the graph is NULL.
 int graph_remove_node(graph_t* g, int value){
     // The function removes the node from the graph along with any edges associated with it.
     // That is, this node would have to be removed from all the in and out neighbor's lists that countain it.
-    /*
+    
     if(!g) {return -1;}
     if(find_node(g, value) == NULL) {return 0;}
     node_t* itr = g->nodes->head;
@@ -113,31 +113,33 @@ int graph_remove_node(graph_t* g, int value){
         graph_node_t* graphNode = itr->data;
         //if node contains value
         if(graphNode->data == value){
+            node_t* inItr = graphNode->inNeighbors->head;
+            node_t* outItr = graphNode->outNeighbors->head;
+            //remove every edge from inNeighbor List
+            while(inItr != NULL){
+                node_t* temp = inItr->next;
+                graph_node_t* source = inItr->data;
+                graph_remove_edge(g, source->data, graphNode->data);
+                inItr = temp;
+            }
+            //remove every edge from outNeighbor list
+            while(outItr != NULL){
+                node_t* temp = outItr->next;
+                graph_node_t* destination = outItr->data; 
+                graph_remove_edge(g, graphNode->data, destination->data);
+                outItr = temp;
+            }    
             free_dll(graphNode->inNeighbors);
             free_dll(graphNode->outNeighbors);
-            free(graph_Node);
-            flag = 0;   
-        }
-        //freeing node that contained value.
-        if(flag == 0){                        
-            itr = itr->next;
+            free(graphNode);
             dll_remove(g->nodes, count);
-            g->numNodes--;
-            continue;       
+            return 1;
         }
-        if(graphNode->data != value){
-            //check inNeighbors List
-            node_t* inItr = graphNode->inNeighbors->head;
-            int pos = 0;
-            while(inItr != NULL){
-                graph_node_t* inNode = inItr->data;
-                if(inNode->data == value){
+        count++;            
+    }
                                
 
-
-*/
-
- return -1;   
+ return 0;   
 }
 
 // Returns 1 on success
@@ -199,6 +201,7 @@ int graph_remove_edge(graph_t * g, int source, int destination){
         count++;
         inItr = inItr->next;
     }
+    count = 0;
      while(outItr != NULL) {
         graph_node_t* graphNode = outItr->data;
         if(graphNode->data == destination){
@@ -207,6 +210,7 @@ int graph_remove_edge(graph_t * g, int source, int destination){
         count++;
         outItr = outItr->next;
     }
+    g->numEdges--;
     return 1;
 }
 
