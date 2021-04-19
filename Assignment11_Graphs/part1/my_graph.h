@@ -237,7 +237,7 @@ int getNumOutNeighbors( graph_t * g, int value){
 // Returns the number of nodes in the graph
 // Returns -1 if the graph is NULL.
 int graph_num_nodes(graph_t* g){
-    if(!g){return -1};
+    if(!g){return -1;}
     return g->numNodes;
 }
 
@@ -255,6 +255,25 @@ void free_graph(graph_t* g){
 
 }
 
-
-
+void print_graph(graph_t* g) {
+    node_t* itr = g->nodes->head;
+    while(itr != NULL){
+        graph_node_t* each = itr->data;
+        printf("Node is %d\n", each->data);
+        node_t* inItr = each->inNeighbors->head;
+        node_t* outItr = each->outNeighbors->head;
+        while(inItr != NULL){
+            graph_node_t* eachIn = inItr->data;
+            printf("InNeighbor is: %d\n", eachIn->data);
+            inItr = inItr->next;
+        }
+         while(outItr != NULL){
+            graph_node_t* eachOut = outItr->data;
+            printf("outNeighbor is: %d\n", eachOut->data);
+            outItr = outItr->next;
+        }
+        printf("\n");
+        itr = itr->next;
+    }    
+}
 #endif
