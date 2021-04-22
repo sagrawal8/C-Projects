@@ -316,6 +316,12 @@ int is_reachable(graph_t * g, int source, int dest){
             }
             if(each->data == dest){
                 free_dll(list);
+                node_t* itr = g->nodes->head;
+                while(itr != NULL){
+                    graph_node_t* temp = itr->data;
+                    temp->visited = 0;
+                    itr = itr->next;
+                }
                 return 1;
             }
             each->visited = 1;
@@ -337,6 +343,12 @@ int is_reachable(graph_t * g, int source, int dest){
         flag = 0;
     }   
     free_dll(list);
+    node_t* itr = g->nodes->head;
+    while(itr != NULL){
+        graph_node_t* temp = itr->data;
+        temp->visited = 0;
+        itr = itr->next;
+    }
     return 0;
 }
 
@@ -346,40 +358,45 @@ int is_reachable(graph_t * g, int source, int dest){
 // You may use either BFS or DFS to complete this task.
 int has_cycle(graph_t * g){
    if(!g) {return -1;}
-    node_t* headGraph = g->nodes->head;
-    graph_node_t* headGraphNode = headGraph->data;
-    headGraphNode->visited = 1;
-    int flag = -1;
-    int flag2 = -1;
-    dll_t* list = create_dll();
-    node_t* outItr = headGraphNode->outNeighbors->head;
-    node_t* listItr = NULL;
-    while(listItr != NULL || flag == -1){
-        while(outItr != NULL){
-            graph_node_t* each = outItr->data;
-            if(each->visited == 1){
-                free_dll(list);
-                return 1;
+    
+    node_t* graphItr = g->nodes->head;
+    while(graphItr != NULL){
+        int flag = -1;
+        int flag2 = -1;
+        graph_node_t* headGraphNode = graphItr->data;
+        headGraphNode->visited = 1;
+        dll_t* list = create_dll();
+        node_t* outItr = headGraphNode->outNeighbors->head;
+        node_t* listItr = NULL;
+        while(listItr != NULL || flag == -1){
+            while(outItr != NULL){
+                graph_node_t* each = outItr->data;
+                if(each->visited == 1){
+                    free_dll(list);
+                    return 1;
+                }
+                each->visited = 1;
+                dll_push_back(list, each);
+                outItr = outItr->next;
+            } 
+            if(flag2 == -1){
+                listItr = list->head;
+                flag2 = 0;
             }
-            each->visited = 1;
-            dll_push_back(list, each);
-            outItr = outItr->next;
-        }
-        if(flag2 == -1){
-            listItr = list->head;
-            flag2 = 0;
-        }
-        else{
-            if(listItr->next == NULL){
-                break;
+            else{
+                if(listItr->next == NULL){
+                    break;
+                }
+                listItr = listItr->next;
             }
-            listItr = listItr->next;
+            graph_node_t* temp = listItr->data;
+            outItr = temp->outNeighbors->head;
+            flag = 0;
         }
-        graph_node_t* temp = listItr->data;
-        outItr = temp->outNeighbors->head;
-        flag = 0;
+        graphItr = graphItr->next;
+        free_dll(list);
     }
-    free_dll(list);
+    //free_dll(list);
     return 0;
 }
      
