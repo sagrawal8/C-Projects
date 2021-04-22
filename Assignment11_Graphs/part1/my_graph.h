@@ -303,29 +303,39 @@ int is_reachable(graph_t * g, int source, int dest){
     graph_node_t* sourceNode = find_node(g, source);
     sourceNode->visited = 1;
     int flag = -1;
-    
-    
-        dll_t* list = create_dll();
-        node_t* outItr = sourceNode->outNeighbors->head;
-        while(outItr != NULL){
-            printf("itr\n");
-            graph_node_t* each = outItr->data;
-            outItr = outItr->next;
+    int flag2 = -1;
+    dll_t* list = create_dll();
+    node_t* outItr = sourceNode->outNeighbors->head;
+    node_t* listItr = NULL;
+    while(listItr != NULL || flag == -1){
+        while(outItr != NULL){ 
+            graph_node_t* each = outItr->data;         
             if(each->visited == 1){
+                outItr = outItr->next;
                 continue;
             }
-            printf("value being compared is%d\n", each->data);
             if(each->data == dest){
-                printf("value being compared is%d\n", each->data);
+                free_dll(list);
                 return 1;
             }
-            dll_push_back(list, each);
-            if(outItr == NULL){
-                printf("hi");
-                outItr = list->head;
-            }            
             each->visited = 1;
+            dll_push_back(list, each);
+            outItr = outItr->next;                      
         }
+        if(flag2 == -1){
+            listItr = list->head;
+            flag2 = 0;
+        }
+        else{
+            if(listItr->next == NULL){
+                break;
+            }
+            listItr = listItr->next;
+        }
+        graph_node_t* temp = listItr->data;
+        outItr = temp->outNeighbors->head;
+        flag = 0;
+    }   
     free_dll(list);
     return 0;
 }
