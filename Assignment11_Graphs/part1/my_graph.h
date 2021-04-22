@@ -345,8 +345,44 @@ int is_reachable(graph_t * g, int source, int dest){
 // returns -1 if the graph is NULL 
 // You may use either BFS or DFS to complete this task.
 int has_cycle(graph_t * g){
-    return 0;    
+   if(!g) {return -1;}
+    node_t* headGraph = g->nodes->head;
+    graph_node_t* headGraphNode = headGraph->data;
+    headGraphNode->visited = 1;
+    int flag = -1;
+    int flag2 = -1;
+    dll_t* list = create_dll();
+    node_t* outItr = headGraphNode->outNeighbors->head;
+    node_t* listItr = NULL;
+    while(listItr != NULL || flag == -1){
+        while(outItr != NULL){
+            graph_node_t* each = outItr->data;
+            if(each->visited == 1){
+                free_dll(list);
+                return 1;
+            }
+            each->visited = 1;
+            dll_push_back(list, each);
+            outItr = outItr->next;
+        }
+        if(flag2 == -1){
+            listItr = list->head;
+            flag2 = 0;
+        }
+        else{
+            if(listItr->next == NULL){
+                break;
+            }
+            listItr = listItr->next;
+        }
+        graph_node_t* temp = listItr->data;
+        outItr = temp->outNeighbors->head;
+        flag = 0;
+    }
+    free_dll(list);
+    return 0;
 }
+     
 
 // prints any path from source to destination if there 
 // exists a path from the source to the destination.
