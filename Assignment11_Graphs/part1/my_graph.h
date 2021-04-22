@@ -24,6 +24,7 @@ typedef struct graph{
 
 typedef struct graph_node{
     int data;
+    int visited;
     dll_t* inNeighbors;
     dll_t* outNeighbors;
 }graph_node_t;
@@ -73,7 +74,7 @@ graph_node_t * create_graph_node(int value){
     graph_node->data = value;
     graph_node->inNeighbors = create_dll();
     graph_node->outNeighbors = create_dll();
-    
+    graph_node->visited = 0;
     return graph_node;
 }
 
@@ -271,7 +272,8 @@ void free_graph(graph_t* g){
     free(g);
 }
 
-void print_graph(graph_t* g) {
+// prints graph 
+void print_graph(graph_t * g){
     node_t* itr = g->nodes->head;
     while(itr != NULL){
         graph_node_t* each = itr->data;
@@ -291,5 +293,57 @@ void print_graph(graph_t* g) {
         printf("\n");
         itr = itr->next;
     }    
+}
+
+//returns 1 if we can reach the destination from source
+// returns 0 if it is not reachable
+// returns -1 if the graph is NULL (using BFS)
+int is_reachable(graph_t * g, int source, int dest){
+    if(!g) {return -1;}
+    graph_node_t* sourceNode = find_node(g, source);
+    sourceNode->visited = 1;
+    int flag = -1;
+    
+    
+        dll_t* list = create_dll();
+        node_t* outItr = sourceNode->outNeighbors->head;
+        while(outItr != NULL){
+            printf("itr\n");
+            graph_node_t* each = outItr->data;
+            outItr = outItr->next;
+            if(each->visited == 1){
+                continue;
+            }
+            printf("value being compared is%d\n", each->data);
+            if(each->data == dest){
+                printf("value being compared is%d\n", each->data);
+                return 1;
+            }
+            dll_push_back(list, each);
+            if(outItr == NULL){
+                printf("hi");
+                outItr = list->head;
+            }            
+            each->visited = 1;
+        }
+    free_dll(list);
+    return 0;
+}
+
+//returns 1 if there is a cycle in the graph
+// returns 0 if no cycles exist in the graph
+// returns -1 if the graph is NULL 
+// You may use either BFS or DFS to complete this task.
+int has_cycle(graph_t * g){
+    return 0;    
+}
+
+// prints any path from source to destination if there 
+// exists a path from the source to the destination.
+// Returns 1 if there is a path from source to destination
+// Returns 0 if there is not a path from a source to destination
+// Returns -1 if the graph is NULL
+int print_path(graph_t * g, int source, int dest){
+    return 0;    
 }
 #endif
