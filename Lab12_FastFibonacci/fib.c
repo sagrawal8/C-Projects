@@ -11,8 +11,10 @@
 
 // Implement the recursive version of fibonacci here.
 long fibonacci(int n){
-    // TODO:
-    return 0;
+    if(n <= 1){
+        return n;
+    }
+    return fibonacci(n-1) + fibonacci(n-2);
 }
 
 // Store our previous 'memoized' values
@@ -34,8 +36,25 @@ void initialize(){
 
 
 long dyn_fibonacci(int n){
-   // TODO:
-   return 0;
+    
+    if(memo[n] == -1){
+        memo[0] = 0;
+        memo[1] = 1;
+        if(n==0){
+            return memo[0];
+        }   
+        if(n==1){
+            return memo[1];
+        }
+        else {
+            memo[n] = dyn_fibonacci(n-2) + dyn_fibonacci(n-1);
+            return memo[n];
+            }
+    }
+    else{
+        return memo[n];
+    }
+    
 }
 
 
