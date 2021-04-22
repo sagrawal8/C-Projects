@@ -149,7 +149,7 @@ int graph_remove_node(graph_t* g, int value){
 // Returns -1 if the graph is NULL.
 int contains_edge( graph_t * g, int source, int destination){
     if(!g){return -1;} 
-    if(find_node(g,source) == 0 || find_node(g,destination) == 0) {return 0;}
+    if(find_node(g,source) == NULL || find_node(g,destination) == NULL) {return 0;}
     graph_node_t* inNeighborNode = find_node(g, source);
     graph_node_t* outNeighborNode = find_node(g,destination);
     node_t* inItr = outNeighborNode->inNeighbors->head;
@@ -170,7 +170,7 @@ int graph_add_edge(graph_t * g, int source, int destination){
     // Make sure you modify the in and out neighbors appropriatelly. destination will be an out neighbor of source.
     // Source will be an in neighbor of destination.
     if(!g) {return -1;}
-    if(find_node(g, source) == 0 || find_node(g,destination) == 0) {return 0;} 
+    if(find_node(g, source) == NULL || find_node(g,destination) == NULL) {return 0;} 
     if(contains_edge(g, source, destination)) {return 0;}
     graph_node_t* inNeighborNode = find_node(g, source);
     graph_node_t* outNeighborNode = find_node(g, destination); 
@@ -188,7 +188,7 @@ int graph_remove_edge(graph_t * g, int source, int destination){
     //Make sure you remove destination from the out neighbors of source.
     //Make sure you remove source from the in neighbors of destination.
     if(!g) {return -1;}
-    if(find_node(g, source) == 0 || find_node(g,destination) == 0) {return 0;}
+    if(find_node(g, source) == NULL || find_node(g,destination) == NULL) {return 0;}
     if(!contains_edge(g, source, destination)) {return 0;}
     graph_node_t* outNeighborNode = find_node(g, source);
     graph_node_t* inNeighborNode = find_node(g, destination);
@@ -300,11 +300,17 @@ void print_graph(graph_t * g){
 // returns -1 if the graph is NULL (using BFS)
 int is_reachable(graph_t * g, int source, int dest){
     if(!g) {return -1;}
+    if(find_node(g,source) == NULL){
+        return 0;
+    }
     graph_node_t* sourceNode = find_node(g, source);
     sourceNode->visited = 1;
     int flag = -1;
     int flag2 = -1;
     dll_t* list = create_dll();
+    if(sourceNode->outNeighbors->head == NULL){
+        return 0;
+    }
     node_t* outItr = sourceNode->outNeighbors->head;
     node_t* listItr = NULL;
     while(listItr != NULL || flag == -1){
@@ -358,6 +364,9 @@ int is_reachable(graph_t * g, int source, int dest){
 // You may use either BFS or DFS to complete this task.
 int has_cycle(graph_t * g){
    if(!g) {return -1;}
+    if(g->numNodes == 0) {
+        return 0;
+    }
     node_t* graphItr = g->nodes->head;
     while(graphItr != NULL){
         int flag = -1;
@@ -365,6 +374,10 @@ int has_cycle(graph_t * g){
         graph_node_t* headGraphNode = graphItr->data;
         headGraphNode->visited = 1;
         dll_t* list = create_dll();
+        if(headGraphNode->outNeighbors->head == 0){
+            graphItr = graphItr->next;
+            continue;
+        }  
         node_t* outItr = headGraphNode->outNeighbors->head;
         node_t* listItr = NULL;
         while(listItr != NULL || flag == -1){
@@ -421,34 +434,57 @@ int print_path(graph_t * g, int source, int dest){
     if(is_reachable(g, source, dest) == 0){return 0;}  
     dll_t* list = create_dll();
     int flag = -1;
+    int t = 0;
+    node_t* temp;
+    if(find_node(g,source) == NULL) {
+        return 0;
+    }
     graph_node_t* node = find_node(g, source);
+    if(node->outNeighbors->head == NULL){
+        return 0;
+    }
     node_t* outItr = node->outNeighbors->head;
-    while(outItr != NULL){
+    while(outItr != NULL && t < 10){
+        printf("t is: %d\n", t);
         graph_node_t* each = outItr->data;
+        printf("%d\n", each->visited == 0);
+        printf("Number is %d\n", each->data);
         if(each->data == dest){
-        int count = 0;
-        while(count < dll_size(list)){
-            graph_node_t* each = dll_get(list, count);
-            printf("%d ",each->data);
-            count++;
-            }
+            int count = 0;
+            printf("%d ", source);
+            while(count < dll_size(list)){
+                graph_node_t* eachh = dll_get(list, count);
+                printf("%d ",eachh->data);
+                count++;
+                }
+            printf("%d\n", dest);
             free_dll(list);
             return 1;
         }
         else if(is_reachable(g, each->data, dest) == 1 && each->visited == 0){
+            printf("here\n");
             each->visited = 1;
-            dll_push_back(list,each);
+            dll_push_back(list, each);
             if(flag == -1){
-                outItr = list->head;
+                temp = list->head;
+                graph_node_t* temp2 = temp->data;
+                outItr = temp2->outNeighbors->head;
+                printf("size of outneighbor list is %d\n", dll_size(temp2->outNeighbors));
                 flag = 0;    
             }
-                else{outItr = outItr->next;}
-                continue;
-            }
+            else{
+                temp = temp->next;
+                graph_node_t* temp2 = temp->data;
+                printf("size of outneighbor list is %d\n", dll_size(temp2->outNeighbors));
+                outItr = temp2->outNeighbors->head;
+            }            
+        }
         else{
+            printf("notreachable\n");
             each->visited = 1;
             outItr = outItr->next;
         }
+        t++;
     }
     return 1;
 }
