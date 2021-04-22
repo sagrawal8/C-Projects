@@ -307,10 +307,10 @@ int is_reachable(graph_t * g, int source, int dest){
     sourceNode->visited = 1;
     int flag = -1;
     int flag2 = -1;
-    dll_t* list = create_dll();
     if(sourceNode->outNeighbors->head == NULL){
         return 0;
     }
+    dll_t* list = create_dll();
     node_t* outItr = sourceNode->outNeighbors->head;
     node_t* listItr = NULL;
     while(listItr != NULL || flag == -1){
@@ -376,6 +376,7 @@ int has_cycle(graph_t * g){
         dll_t* list = create_dll();
         if(headGraphNode->outNeighbors->head == 0){
             graphItr = graphItr->next;
+            free(list);
             continue;
         }  
         node_t* outItr = headGraphNode->outNeighbors->head;
@@ -432,7 +433,6 @@ int has_cycle(graph_t * g){
 int print_path(graph_t * g, int source, int dest){
     if(!g){return -1;}  
     if(is_reachable(g, source, dest) == 0){return 0;}  
-    dll_t* list = create_dll();
     int flag = -1;
     int t = 0;
     node_t* temp;
@@ -443,6 +443,7 @@ int print_path(graph_t * g, int source, int dest){
     if(node->outNeighbors->head == NULL){
         return 0;
     }
+    dll_t* list = create_dll();
     node_t* outItr = node->outNeighbors->head;
     while(outItr != NULL && t < 10){
         printf("t is: %d\n", t);
