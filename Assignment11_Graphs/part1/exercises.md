@@ -9,10 +9,10 @@ Discuss and answer the following questions (Make sure to elaborate and justify y
 
 ## Answers
 
-1. *edit your answer here*
-2. *edit your answer here*
-3. *edit your answer here*
-4. *edit your answer here*
+1. O(n+m)
+2. O(n^2)
+3. O(V+E)
+4. O(V+E)
 
 
 ## Interview Prep (Optional +1% Bonus on assignment)
