@@ -11,8 +11,8 @@ Discuss and answer the following questions (Make sure to elaborate and justify y
 
 1. O(n+m)
 2. O(n^2)
-3. O(V+E)
-4. O(V+E)
+3. O(V+E) when adj list is used and O(V^2) when matrix is used
+4. O(V+E) when adj list is used and O(V^2) when matrix is used
 
 
 ## Interview Prep (Optional +1% Bonus on assignment)
