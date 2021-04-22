@@ -105,6 +105,7 @@ int graph_remove_node(graph_t* g, int value){
     
     if(!g) {return -1;}
     if(find_node(g, value) == NULL) {return 0;}
+    
     node_t* itr = g->nodes->head;
     int flag = -1;
     int count = 0;
@@ -150,6 +151,8 @@ int graph_remove_node(graph_t* g, int value){
 int contains_edge( graph_t * g, int source, int destination){
     if(!g){return -1;} 
     if(find_node(g,source) == NULL || find_node(g,destination) == NULL) {return 0;}
+    
+    //find both source and dest nodes and check whether source node lies in dest node's outneighbor list.
     graph_node_t* inNeighborNode = find_node(g, source);
     graph_node_t* outNeighborNode = find_node(g,destination);
     node_t* inItr = outNeighborNode->inNeighbors->head;
@@ -172,10 +175,12 @@ int graph_add_edge(graph_t * g, int source, int destination){
     if(!g) {return -1;}
     if(find_node(g, source) == NULL || find_node(g,destination) == NULL) {return 0;} 
     if(contains_edge(g, source, destination)) {return 0;}
+    
+    //Find source and dest nodes and add in each other inNeighbor/outNeighbor lists.
     graph_node_t* inNeighborNode = find_node(g, source);
     graph_node_t* outNeighborNode = find_node(g, destination); 
-    dll_push_back(inNeighborNode->outNeighbors, outNeighborNode);
-    dll_push_back(outNeighborNode->inNeighbors, inNeighborNode);
+    dll_push_back(inNeighborNode->outNeighbors, outNeighborNode);  //add a reference of dest node to outNeighbor list.
+    dll_push_back(outNeighborNode->inNeighbors, inNeighborNode);   //add a reference of source node to inNeighbor list.
     g->numEdges++;    
     return 1;   
 }
@@ -190,11 +195,14 @@ int graph_remove_edge(graph_t * g, int source, int destination){
     if(!g) {return -1;}
     if(find_node(g, source) == NULL || find_node(g,destination) == NULL) {return 0;}
     if(!contains_edge(g, source, destination)) {return 0;}
+    
+    //Find source and dest nodes.
     graph_node_t* outNeighborNode = find_node(g, source);
     graph_node_t* inNeighborNode = find_node(g, destination);
     node_t* inItr = inNeighborNode->inNeighbors->head;
     node_t* outItr = outNeighborNode->outNeighbors->head;
     int count = 0;
+    //remove source node from dest node's inNeighbor list.
     while(inItr != NULL) {
         graph_node_t* graphNode = inItr->data;
         if(graphNode->data == source){
@@ -203,6 +211,7 @@ int graph_remove_edge(graph_t * g, int source, int destination){
         count++;
         inItr = inItr->next;
     }
+    //remove dest node from sources outneighbor list.
     count = 0;
     while(outItr != NULL) {
         graph_node_t* graphNode = outItr->data;
@@ -272,7 +281,8 @@ void free_graph(graph_t* g){
     free(g);
 }
 
-// prints graph 
+// Custom method to print graph.
+// Prints each node and its in/out neighbor lists.
 void print_graph(graph_t * g){
     node_t* itr = g->nodes->head;
     while(itr != NULL){
@@ -299,31 +309,38 @@ void print_graph(graph_t * g){
 // returns 0 if it is not reachable
 // returns -1 if the graph is NULL (using BFS)
 int is_reachable(graph_t * g, int source, int dest){
-    if(!g) {return -1;}
-    if(find_node(g,source) == NULL){
+    if(!g) {return -1;}  //check if graph is null.
+    if(find_node(g,source) == NULL){  //check if source node exists.
+        return 0;
+    }
+    if(find_node(g,dest) == NULL){  //check if dest node exists.
         return 0;
     }
     graph_node_t* sourceNode = find_node(g, source);
-    sourceNode->visited = 1;
-    int flag = -1;
+    sourceNode->visited = 1;  //set source to visited.
+    int flag = -1; //used to either start iterator from head or from head->next
     int flag2 = -1;
-    if(sourceNode->outNeighbors->head == NULL){
+    //For some reason I had seg fault if this condition wasn't 
+    //present even though its checked in while loop.
+    if(sourceNode->outNeighbors->head == NULL){ 
         return 0;
     }
+    //create dll to store outNeighbor nodes while performing BFS.
     dll_t* list = create_dll();
     node_t* outItr = sourceNode->outNeighbors->head;
     node_t* listItr = NULL;
+    //listItr will be NULL on first run, therefore flag1 is used.
     while(listItr != NULL || flag == -1){
         while(outItr != NULL){ 
             graph_node_t* each = outItr->data;         
-            if(each->visited == 1){
+            if(each->visited == 1){      //continue if visited previously.
                 outItr = outItr->next;
                 continue;
             }
-            if(each->data == dest){
+            if(each->data == dest){   //if dest node is reached
                 free_dll(list);
                 node_t* itr = g->nodes->head;
-                while(itr != NULL){
+                while(itr != NULL){    //reset visited to 0.
                     graph_node_t* temp = itr->data;
                     temp->visited = 0;
                     itr = itr->next;
@@ -331,7 +348,7 @@ int is_reachable(graph_t * g, int source, int dest){
                 return 1;
             }
             each->visited = 1;
-            dll_push_back(list, each);
+            dll_push_back(list, each);  //add outNeighbor node to list to search again.
             outItr = outItr->next;                      
         }
         if(flag2 == -1){
@@ -349,7 +366,7 @@ int is_reachable(graph_t * g, int source, int dest){
         flag = 0;
     }   
     free_dll(list);
-    node_t* itr = g->nodes->head;
+    node_t* itr = g->nodes->head;     //reset visited to 0 if loop ends.
     while(itr != NULL){
         graph_node_t* temp = itr->data;
         temp->visited = 0;
@@ -367,27 +384,27 @@ int has_cycle(graph_t * g){
     if(g->numNodes == 0) {
         return 0;
     }
-    node_t* graphItr = g->nodes->head;
+    node_t* graphItr = g->nodes->head;  //start from head of graph.
     while(graphItr != NULL){
         int flag = -1;
         int flag2 = -1;
         graph_node_t* headGraphNode = graphItr->data;
-        headGraphNode->visited = 1;
+        headGraphNode->visited = 1;  //set visited to 1.
         dll_t* list = create_dll();
-        if(headGraphNode->outNeighbors->head == 0){
-            graphItr = graphItr->next;
+        if(headGraphNode->outNeighbors->head == NULL){ //had seg fault if condition wasnt present.
+            graphItr = graphItr->next;  //if node has no outneighbors, check next node.
             free(list);
             continue;
         }  
         node_t* outItr = headGraphNode->outNeighbors->head;
         node_t* listItr = NULL;
-        while(listItr != NULL || flag == -1){
+        while(listItr != NULL || flag == -1){  //list iterator null at first run, therefore used flag.
             while(outItr != NULL){
                 graph_node_t* each = outItr->data;
-                if(each->visited == 1){
+                if(each->visited == 1){            //check if visited node is encountered
                     free_dll(list);
                     node_t* itr = g->nodes->head;
-                    while(itr != NULL){
+                    while(itr != NULL){     //reset visited to 0.
                         graph_node_t* temp = itr->data;
                         temp->visited = 0;
                         itr = itr->next;
@@ -395,7 +412,7 @@ int has_cycle(graph_t * g){
                     return 1;
                 }
                 each->visited = 1;
-                dll_push_back(list, each);
+                dll_push_back(list, each);  //add outneighbor node to list for further runs.
                 outItr = outItr->next;
             } 
             if(flag2 == -1){
@@ -415,7 +432,7 @@ int has_cycle(graph_t * g){
         graphItr = graphItr->next;
         free_dll(list);
     }
-    node_t* itr = g->nodes->head;
+    node_t* itr = g->nodes->head;   //reset visited to 0.
     while(itr != NULL){
         graph_node_t* temp = itr->data;
         temp->visited = 0;
@@ -434,23 +451,19 @@ int print_path(graph_t * g, int source, int dest){
     if(!g){return -1;}  
     if(is_reachable(g, source, dest) == 0){return 0;}  
     int flag = -1;
-    int t = 0;
     node_t* temp;
-    if(find_node(g,source) == NULL) {
+    if(find_node(g,source) == NULL) {  //check if source exists.
         return 0;
     }
-    graph_node_t* node = find_node(g, source);
+    graph_node_t* node = find_node(g, source);  
     if(node->outNeighbors->head == NULL){
         return 0;
     }
-    dll_t* list = create_dll();
-    node_t* outItr = node->outNeighbors->head;
-    while(outItr != NULL && t < 10){
-        printf("t is: %d\n", t);
+    dll_t* list = create_dll(); //create a list to store path
+    node_t* outItr = node->outNeighbors->head; //start iteration from outneighbor list of source node.
+    while(outItr != NULL){
         graph_node_t* each = outItr->data;
-        printf("%d\n", each->visited == 0);
-        printf("Number is %d\n", each->data);
-        if(each->data == dest){
+        if(each->data == dest){  //if destination reached, print path and free list.
             int count = 0;
             printf("%d ", source);
             while(count < dll_size(list)){
@@ -460,32 +473,43 @@ int print_path(graph_t * g, int source, int dest){
                 }
             printf("%d\n", dest);
             free_dll(list);
+            node_t* itr = g->nodes->head;
+            while(itr != NULL){    //reset visited to 0.
+                graph_node_t* temp = itr->data;
+                temp->visited = 0;
+                itr = itr->next;
+            }
             return 1;
         }
-        else if(is_reachable(g, each->data, dest) == 1 && each->visited == 0){
-            printf("here\n");
+        else if(is_reachable(g, each->data, dest) == 1 && each->visited == 0){ 
+            //if dest is reachable from current node, add current to list.
+            //and make iterator read outNeighbors of current node.
+            //Doesnt give shortest path, but gives a path.
             each->visited = 1;
             dll_push_back(list, each);
             if(flag == -1){
                 temp = list->head;
                 graph_node_t* temp2 = temp->data;
                 outItr = temp2->outNeighbors->head;
-                printf("size of outneighbor list is %d\n", dll_size(temp2->outNeighbors));
                 flag = 0;    
             }
             else{
                 temp = temp->next;
                 graph_node_t* temp2 = temp->data;
-                printf("size of outneighbor list is %d\n", dll_size(temp2->outNeighbors));
                 outItr = temp2->outNeighbors->head;
             }            
         }
+        //if node is not reachable from current node, check other out neighbor nodes.
         else{
-            printf("notreachable\n");
             each->visited = 1;
             outItr = outItr->next;
         }
-        t++;
+    }
+     node_t* itr = g->nodes->head;
+     while(itr != NULL){    //reset visited to 0.
+        graph_node_t* temp = itr->data;
+        temp->visited = 0;
+        itr = itr->next;
     }
     return 1;
 }
