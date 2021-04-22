@@ -333,7 +333,7 @@ int is_reachable(graph_t * g, int source, int dest){
             flag2 = 0;
         }
         else{
-            if(listItr->next == NULL){
+           if(listItr->next == NULL){
                 break;
             }
             listItr = listItr->next;
@@ -358,7 +358,6 @@ int is_reachable(graph_t * g, int source, int dest){
 // You may use either BFS or DFS to complete this task.
 int has_cycle(graph_t * g){
    if(!g) {return -1;}
-    
     node_t* graphItr = g->nodes->head;
     while(graphItr != NULL){
         int flag = -1;
@@ -373,6 +372,12 @@ int has_cycle(graph_t * g){
                 graph_node_t* each = outItr->data;
                 if(each->visited == 1){
                     free_dll(list);
+                    node_t* itr = g->nodes->head;
+                    while(itr != NULL){
+                        graph_node_t* temp = itr->data;
+                        temp->visited = 0;
+                        itr = itr->next;
+                    }
                     return 1;
                 }
                 each->visited = 1;
@@ -396,7 +401,12 @@ int has_cycle(graph_t * g){
         graphItr = graphItr->next;
         free_dll(list);
     }
-    //free_dll(list);
+    node_t* itr = g->nodes->head;
+    while(itr != NULL){
+        graph_node_t* temp = itr->data;
+        temp->visited = 0;
+        itr = itr->next;
+    }
     return 0;
 }
      
@@ -407,6 +417,39 @@ int has_cycle(graph_t * g){
 // Returns 0 if there is not a path from a source to destination
 // Returns -1 if the graph is NULL
 int print_path(graph_t * g, int source, int dest){
-    return 0;    
+    if(!g){return -1;}  
+    if(is_reachable(g, source, dest) == 0){return 0;}  
+    dll_t* list = create_dll();
+    int flag = -1;
+    graph_node_t* node = find_node(g, source);
+    node_t* outItr = node->outNeighbors->head;
+    while(outItr != NULL){
+        graph_node_t* each = outItr->data;
+        if(each->data == dest){
+        int count = 0;
+        while(count < dll_size(list)){
+            graph_node_t* each = dll_get(list, count);
+            printf("%d ",each->data);
+            count++;
+            }
+            free_dll(list);
+            return 1;
+        }
+        else if(is_reachable(g, each->data, dest) == 1 && each->visited == 0){
+            each->visited = 1;
+            dll_push_back(list,each);
+            if(flag == -1){
+                outItr = list->head;
+                flag = 0;    
+            }
+                else{outItr = outItr->next;}
+                continue;
+            }
+        else{
+            each->visited = 1;
+            outItr = outItr->next;
+        }
+    }
+    return 1;
 }
 #endif
